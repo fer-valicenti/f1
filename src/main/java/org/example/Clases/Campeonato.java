@@ -28,15 +28,20 @@ public class Campeonato implements IManejoDeCampeonatos {
     public String simularCameponato() {
         StringBuilder campeonatoResultado = new StringBuilder();
         Map<Driver, Integer> puntosTotales = new HashMap<>();
+        Map<Team, Integer> puntosTotalesEquipos = new HashMap<>();
+        Map<Driver, Integer> puntosCarrera = new HashMap<>();
         for (Circuit circuito : circuitos) {
-            Map<Driver, Integer> puntosCarrera = simularCarrera(circuito);
+            puntosCarrera = simularCarrera(circuito);
             campeonatoResultado.append("Tabla de posiciones en: ").append(circuito.getNombre()).append(":\n\n");
             campeonatoResultado.append(generarTablaPosicionesCarrera(puntosCarrera)).append("\n");
             actualizarPuntosTotales(puntosTotales, puntosCarrera);
+            actualizarPuntosPorEquipo(puntosTotalesEquipos, puntosCarrera);
         }
-        campeonatoResultado.append("\nTabla de posiciones final del campeonato: \n\n");
-        campeonatoResultado.append(generarTablaPosiciones(puntosTotales));
+        campeonatoResultado.append("\nTabla de posiciones final del Campeonato: \n\n");
+        campeonatoResultado.append(generarTablaPosiciones(puntosCarrera));
 
+        campeonatoResultado.append("\nTabla de posiciones final del Campeonato de Constructores: \n\n");
+        campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquipos));
 
         return campeonatoResultado.toString();
     }
@@ -94,6 +99,20 @@ public class Campeonato implements IManejoDeCampeonatos {
         return tabla.toString();
     }
 
+    public String generarTablaPosicionesEquipos(Map<Team, Integer> puntosTotales)
+    {
+        StringBuilder tabla= new StringBuilder();
+        List<Team> equiposOrdenadosPorPuntos = new ArrayList<>(puntosTotales.keySet());
+        equiposOrdenadosPorPuntos.sort(Comparator.comparingInt(puntosTotales::get).reversed());
+        for (int i = 0; i < equiposOrdenadosPorPuntos.size(); i++)
+        {
+            Team equipo= equiposOrdenadosPorPuntos.get(i);
+            tabla.append(String.format("%d. %s - Puntos totales: %d%n", i + 1, equipo.getNombre(), puntosTotales.get(equipo)));
+        }
+
+        return tabla.toString();
+    }
+
     public void asignarPuntos(List<Driver> pilotosEnCarrera) {
         int[] puntosPorPosicion = {25, 18, 15, 12, 10, 8, 6, 4, 2, 1};
         for (int i = 0; i < Math.min(pilotosEnCarrera.size(), 10); i++) {
@@ -119,6 +138,30 @@ public class Campeonato implements IManejoDeCampeonatos {
         if (tiempoVuelta < mejorTiempo) {
             mejoresTiempos.put(piloto, tiempoVuelta);
         }
+    }
+
+    public void actualizarPuntosPorEquipo(Map<Team, Integer> puntosTotalesEquipos, Map<Driver, Integer> puntosCarrera)
+    {
+        for(Map.Entry<Driver, Integer> entry : puntosCarrera.entrySet())
+        {
+            Driver piloto = entry.getKey();
+            Team equipo = encontrarEquipoPorPiloto(piloto);
+            int puntosCarreraPiloto = entry.getValue();
+            int puntosTotalesEquipoo = puntosTotalesEquipos.getOrDefault(equipo, 0);
+            puntosTotalesEquipos.put(equipo, puntosTotalesEquipoo + puntosCarreraPiloto);
+        }
+    }
+
+    public Team encontrarEquipoPorPiloto(Driver piloto)
+    {
+        for(Team equipo : equipos)
+        {
+            if(equipo.getPrimer_piloto().equals(piloto) || equipo.getSegundo_piloto().equals(piloto))
+            {
+                return equipo;
+            }
+        }
+        return null; // en caso de q no se encuentre el equipo
     }
 
 }

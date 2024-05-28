@@ -16,4 +16,7 @@ public interface IManejoDeCampeonatos {
     public void asignarPuntos(List<Driver> pilotosEnCarrera);
     public void actualizarPuntosTotales(Map<Driver, Integer> puntosTotales, Map<Driver, Integer> puntosCarrera);
     public void actualizarMejorTiempo(Driver piloto, double tiempoVuelta);
+    public String generarTablaPosicionesEquipos(Map<Team, Integer> puntosTotales);
+    public void actualizarPuntosPorEquipo(Map<Team, Integer> puntosTotalesEquipos, Map<Driver, Integer> puntosCarrera);
+    public Team encontrarEquipoPorPiloto(Driver piloto);
 }
