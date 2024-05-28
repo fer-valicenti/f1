@@ -28,20 +28,23 @@ public class Campeonato implements IManejoDeCampeonatos {
     public String simularCameponato() {
         StringBuilder campeonatoResultado = new StringBuilder();
         Map<Driver, Integer> puntosTotales = new HashMap<>();
-        Map<Team, Integer> puntosTotalesEquipos = new HashMap<>();
+        Map<Team, Integer> puntosTotalesEquiposFinal = new HashMap<>();
         Map<Driver, Integer> puntosCarrera = new HashMap<>();
         for (Circuit circuito : circuitos) {
             puntosCarrera = simularCarrera(circuito);
             campeonatoResultado.append("Tabla de posiciones en: ").append(circuito.getNombre()).append(":\n\n");
             campeonatoResultado.append(generarTablaPosicionesCarrera(puntosCarrera)).append("\n");
+            Map<Team, Integer> puntosTotalesEquipos = new HashMap<>();
             actualizarPuntosTotales(puntosTotales, puntosCarrera);
             actualizarPuntosPorEquipo(puntosTotalesEquipos, puntosCarrera);
+            campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquipos));
+            puntosTotalesEquiposFinal=puntosTotalesEquipos;
         }
         campeonatoResultado.append("\nTabla de posiciones final del Campeonato: \n\n");
         campeonatoResultado.append(generarTablaPosiciones(puntosCarrera));
 
         campeonatoResultado.append("\nTabla de posiciones final del Campeonato de Constructores: \n\n");
-        campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquipos));
+        campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquiposFinal));
 
         return campeonatoResultado.toString();
     }
@@ -147,8 +150,9 @@ public class Campeonato implements IManejoDeCampeonatos {
             Driver piloto = entry.getKey();
             Team equipo = encontrarEquipoPorPiloto(piloto);
             int puntosCarreraPiloto = entry.getValue();
-            int puntosTotalesEquipoo = puntosTotalesEquipos.getOrDefault(equipo, 0);
-            puntosTotalesEquipos.put(equipo, puntosTotalesEquipoo + puntosCarreraPiloto);
+
+            int puntosTotalesEquipo = puntosTotalesEquipos.getOrDefault(equipo, 0);
+            puntosTotalesEquipos.put(equipo, puntosTotalesEquipo + puntosCarreraPiloto);
         }
     }
 
