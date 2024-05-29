@@ -20,13 +20,15 @@ public class OpenF1Client {
        // System.out.println(drivers.toString());
         List<Team> teams=generarGrilla();
         //System.out.println(teams);
-        List<Driver> drivers=generarListaPilotos();
-        List<Circuit> circuits=generarListaCircuitos();
-        Campeonato campeonato = new Campeonato(teams, circuits);
-        String resultados = campeonato.simularCameponato();
+        //List<Driver> drivers=generarListaPilotos();
+       // List<Circuit> circuits=generarListaCircuitos();
+        //Campeonato campeonato = new Campeonato(teams, circuits);
+        //String resultados = campeonato.simularCameponato();
        // System.out.println(resultados);
         //SwingUtilities.invokeLater(OpenF1GUI::new);
-        F1Gui interfaz = new F1Gui();
+        //F1Gui interfaz = new F1Gui();
+        createDriver(teams);
+        System.out.println(teams.toString());
 
 
     }
@@ -145,7 +147,7 @@ public class OpenF1Client {
 
     Team equipo1 = new Team("Red Bull Racing","#3671C6",piloto1,piloto2);
     teams.add(equipo1);
-    Team equipo2 = new Team("Ferrari","#F91536",piloto3,piloto4);
+    Team equipo2 = new Team("Ferrari","#F91536",piloto4,piloto3);
     teams.add(equipo2);
     Team equipo3 = new Team("Mercedes","#6CD3BF",piloto5,piloto6);
     teams.add(equipo3);
@@ -220,7 +222,7 @@ public class OpenF1Client {
         return drivers;
     }
 
-    public static void createDriver(List<Driver> drivers) {
+    public static void createDriver(List<Team> equipos) {
         System.out.println("Ingrese los datos del nuevo piloto:");
 
         // Solicitar y validar el Nombre
@@ -245,87 +247,189 @@ public class OpenF1Client {
                 scanner.next();
             }
             driverNumber = scanner.nextInt();
-        } while (isDriverNumberUsed(driverNumber,drivers)); // Verificar si el número de auto ya está en uso
-
-        scanner.nextLine(); // Consumir el salto de línea pendiente
-
-        // Solicitar y validar el Equipo
-/*
-        String teamName;
-        do {
-            System.out.print("Equipo: ");
-            teamName = scanner.nextLine();
-        } while (!isTeamValid(teamName)); // Verificar si el equipo ingresado existe
-
-        Obtener la lista de pilotos del equipo especificado
-        List<String> teamDrivers = getTeamDrivers(teamName);
-
-        // Preguntar al usuario a qué piloto quiere reemplazar
-        String pilotToReplace;
-        do {
-            System.out.println("¿Qué piloto desea reemplazar?");
-            for (String driver : teamDrivers) {
-                System.out.println(driver);
-            }
-            System.out.print("Ingrese el apellido del piloto: ");
-            pilotToReplace = scanner.nextLine();
-        } while (!teamDrivers.contains(pilotToReplace)); // Verificar si el piloto ingresado está en la lista de pilotos del equipo
-*/
-
-
+        } while (isDriverNumberUsed(driverNumber,equipos)); // Verificar si el número de auto ya está en uso
         // Construir el objeto Driver con los datos ingresados
         Driver newDriver = new Driver(lastName.substring(0, Math.min(lastName.length(), 3)).toUpperCase(), firstName,
-        lastName,country,driverNumber);
+                lastName,country,driverNumber);
+        scanner.nextLine(); // Consumir el salto de línea pendiente
+        int teamName;
+        System.out.println("Para que escuderia quieres correr:" +
+                "\n[0] Red Bull Racing" +
+                "\n[1] Ferrari" +
+                "\n[2] Mercedes" +
+                "\n[3] McLaren" +
+                "\n[4] Aston Martin" +
+                "\n[5] RB" +
+                "\n[6] Alpine" +
+                "\n[7] Kick Sauber" +
+                "\n[8] Williams" +
+                "\n[9] Haas\n");
+        teamName=scanner.nextInt();
+        while (teamName<0 || teamName>10){
+            System.out.println("\n Ingrese un numero valido"+
+                            "\n[0] Red Bull Racing" +
+                            "\n[1] Ferrari" +
+                            "\n[2] Mercedes" +
+                            "\n[3] McLaren" +
+                            "\n[4] Aston Martin" +
+                            "\n[5] RB" +
+                            "\n[6] Alpine" +
+                            "\n[7] Kick Sauber" +
+                            "\n[8] Williams" +
+                            "\n[9] Haas\n");
+        teamName=scanner.nextInt();}
 
-        drivers.add(newDriver);
+        int teamDriver;
+        Team equipo;
+
+        switch (teamName) {
+            case 0:
+                equipo=buscarEquipo(equipos,"Red Bull Racing");
+                System.out.println("Quiere reemplazar a [1] Verstappen o [2] Perez");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Verstappen o [2] Perez: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            case 1:
+                equipo=buscarEquipo(equipos,"Ferrari");
+                System.out.println("Quiere reemplazar a [1] Leclerc o [2] Sainz");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Leclerc o [2] Sainz: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+
+                break;
+            case 2:
+                equipo=buscarEquipo(equipos,"Mercedes");
+                System.out.println("Quiere reemplazar a [1] Hamilton o [2] Russell");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Hamilton o [2] Russel: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+
+                break;
+            case 3:
+                equipo=buscarEquipo(equipos,"McLaren");
+                System.out.println("Quiere reemplazar a [1] Norris o [2] Piastri");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Norris o [2] Piastri: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            case 4:
+                equipo=buscarEquipo(equipos,"Aston Martin");
+                System.out.println("Quiere reemplazar a [1] Alonso o [2] Stroll");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Alonso o [2] Stroll: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            case 5:
+                equipo=buscarEquipo(equipos,"RB");
+                System.out.println("Quiere reemplazar a [1] Ricciardo o [2] Tsunoda");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Ricciardo o [2] Tsunoda: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            case 6:
+                equipo=buscarEquipo(equipos,"Alpine");
+                System.out.println("Quiere reemplazar a [1] Ocon o [2] Gasly");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Ocon o [2] Gasly: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+
+                break;
+            case 7:
+                equipo=buscarEquipo(equipos,"Kick Sauber");
+                System.out.println("Quiere reemplazar a [1] Bottas o [2] Zhou");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Bottas o [2] Zhou: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            case 8:
+                equipo=buscarEquipo(equipos,"Williams");
+                System.out.println("Quiere reemplazar a [1] Albon o [2] Sargeant");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Albon o [2] Sargeant: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            case 9:
+                equipo=buscarEquipo(equipos,"Haas");
+                System.out.println("Quiere reemplazar a [1] Magnussen o [2] Hulkenberg");
+                teamDriver= scanner.nextInt();
+
+                while(teamDriver != 1 && teamDriver != 2){
+                    System.out.println("\n Ingrese un numero valido, [1] Magnussen o [2] Hulkenberg: ");
+                    teamDriver= scanner.nextInt();}
+                if(teamDriver==1){equipo.setPrimer_piloto(newDriver);
+                }else {equipo.setSegundo_piloto(newDriver);}
+                break;
+            default:
+                System.out.println("Número de equipo no válido");
+                break;
+        }
+
+
+
 
         // Imprimir los detalles del nuevo piloto creado
         System.out.println("\nNuevo piloto creado:");
         System.out.println(newDriver);
     }
 
-    public static boolean isDriverNumberUsed(int driverNumber,List<Driver> drivers) {
-        for (Driver driver : drivers) {
-            if (driver.getDriver_number() == driverNumber) {
+    public static boolean isDriverNumberUsed(int driverNumber,List<Team> equipos) {
+        boolean condicion=false;
+        for (Team equipo : equipos) {
+            if (equipo.getPrimer_piloto().getDriver_number() == driverNumber ||equipo.getSegundo_piloto().getDriver_number() == driverNumber ) {
                 System.out.println("El número de auto ingresado ya está en uso.");
-                return true;
+                condicion= true;
             }
         }
-        return false;
+        return condicion;
     }
 
-    private static List<String> getTeamDrivers(String teamName) {
-        // Aquí puedes implementar la lógica para obtener la lista de pilotos del equipo especificado
-        // Por ahora, simplemente retornamos una lista de ejemplo para simular los pilotos del equipo
-        switch (teamName.toLowerCase()) {
-            case "red bull racing":
-                return Arrays.asList("Verstappen", "Perez");
-            case "mercedes":
-                return Arrays.asList("Hamilton", "Russel");
-            case "mclaren":
-                return Arrays.asList("Norris", "Piastri");
-            case "aston martin":
-                return Arrays.asList("Alonso", "Stroll");
-            case "alfa romeo":
-                return Arrays.asList("Bottas", "Zhu");
-            case "alpha tauri":
-                return Arrays.asList("Ricciardo", "Tsunoda");
-            case "ferrari":
-                return Arrays.asList("Leclerc", "Sainz");
-            case "haas":
-                return Arrays.asList("Hulkenberg", "Magnussen");
-            case "williams":
-                return Arrays.asList("Albon", "Sergeant");
-            case "alpine":
-                return Arrays.asList("Gasly", "Ocon");
-            default:
-                return Collections.emptyList();
+
+
+    public static Team buscarEquipo(List<Team> equipos, String nombreEquipo) {
+        Team newEquipo=new Team();
+        for (Team equipo : equipos) {
+            if (equipo.getNombre().equalsIgnoreCase(nombreEquipo)) {
+                newEquipo= equipo; // Retorna el nombre del equipo encontrado
+            }
         }
-    }
-
-    private static boolean isTeamValid(String teamName) {
-        // buscar si el equipo existe
-        return true;
+        return newEquipo; // Retorna un mensaje si el equipo no está en la lista
     }
 
 }
