@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -23,7 +24,10 @@ public class OpenF1Client {
         List<Circuit> circuits=generarListaCircuitos();
         Campeonato campeonato = new Campeonato(teams, circuits);
         String resultados = campeonato.simularCameponato();
-        System.out.println(resultados);
+       // System.out.println(resultados);
+        //SwingUtilities.invokeLater(OpenF1GUI::new);
+        F1Gui interfaz = new F1Gui();
+        interfaz.iniciarJuego();
 
     }
 
@@ -115,7 +119,7 @@ public class OpenF1Client {
         return drivers;
     }
 
-    private static List<Team> generarGrilla(){
+    public static List<Team> generarGrilla(){
     List<Team> teams = new ArrayList<>();
 
     Driver piloto1 = new Driver("NED",1,"Max","https://www.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png","Verstappen","VER");
@@ -280,7 +284,7 @@ public class OpenF1Client {
         System.out.println(newDriver);
     }
 
-    private static boolean isDriverNumberUsed(int driverNumber,List<Driver> drivers) {
+    public static boolean isDriverNumberUsed(int driverNumber,List<Driver> drivers) {
         for (Driver driver : drivers) {
             if (driver.getDriver_number() == driverNumber) {
                 System.out.println("El número de auto ingresado ya está en uso.");
