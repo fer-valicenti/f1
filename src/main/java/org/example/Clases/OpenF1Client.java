@@ -27,7 +27,7 @@ public class OpenF1Client {
        // System.out.println(resultados);
         //SwingUtilities.invokeLater(OpenF1GUI::new);
         F1Gui interfaz = new F1Gui();
-        interfaz.iniciarJuego();
+
 
     }
 

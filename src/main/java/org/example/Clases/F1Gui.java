@@ -11,6 +11,8 @@ import javax.sound.sampled.*;
 
 import static org.example.Clases.OpenF1Client.isDriverNumberUsed;
 
+//https://www.youtube.com/watch?v=6YYmZ8cQc7o&ab_channel=GeoCositasParaDummies
+
 public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
@@ -40,7 +42,7 @@ public class F1Gui extends JFrame {
 
         //Boton iniciar juego
         startButton = new JButton("Iniciar Juego");
-        startButton.setBounds(320, 200, 150, 30);
+        startButton.setBounds(320, 360, 150, 30);
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,7 +60,7 @@ public class F1Gui extends JFrame {
 
         //booton de seleccionar piloto
         selectDriverButton = new JButton("Seleccionar Piloto");
-        selectDriverButton.setBounds(320, 310, 150, 30);
+        selectDriverButton.setBounds(320, 360, 150, 30);
         selectDriverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -69,7 +71,7 @@ public class F1Gui extends JFrame {
 
         //Boton crear piloto
         createDriverButton = new JButton("Crear Piloto");
-        createDriverButton.setBounds(320, 360, 150, 30);
+        createDriverButton.setBounds(320, 410, 150, 30);
         createDriverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
