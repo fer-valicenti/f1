@@ -20,6 +20,13 @@ public class Team {
         this.segundo_piloto = segundo_piloto;
     }
 
+    public Team() {
+        nombre="";
+        team_color=null;
+        primer_piloto= new Driver();
+        segundo_piloto= new Driver();
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -34,6 +41,14 @@ public class Team {
 
     public Driver getSegundo_piloto() {
         return segundo_piloto;
+    }
+
+    public void setSegundo_piloto(Driver segundo_piloto) {
+        this.segundo_piloto = segundo_piloto;
+    }
+
+    public void setPrimer_piloto(Driver primer_piloto) {
+        this.primer_piloto = primer_piloto;
     }
 
     @Override

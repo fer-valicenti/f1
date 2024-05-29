@@ -60,6 +60,8 @@ public class Driver {
         first_name=firstName;
         last_name=lastName;
         name_acronym=upperCase;
+        headshot_url=null;
+        full_name=firstName + " " + lastName;
 
     }
 
