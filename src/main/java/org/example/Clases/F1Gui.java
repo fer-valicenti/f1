@@ -16,6 +16,7 @@ import static org.example.Clases.OpenF1Client.isDriverNumberUsed;
 public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
+    private JComboBox<Team> teamComboBox;
     private JButton startButton, selectDriverButton, createDriverButton;
     private List<Team> teams;
     private List<Driver> drivers;
@@ -23,6 +24,8 @@ public class F1Gui extends JFrame {
     private Campeonato campeonato;
     private JLabel backgroundLabel;
     private Driver selectedDriver;
+    private JTextArea circuitListTextArea;
+    private Team selectTeam;
     private Clip clip;
     public F1Gui()
     {
@@ -80,6 +83,19 @@ public class F1Gui extends JFrame {
         });
         add(createDriverButton);
 
+        // Área de texto para listar circuitos
+        JLabel circuitLabel = new JLabel("Circuitos:");
+        circuitLabel.setBounds(320, 410, 150, 30);
+        add(circuitLabel);
+
+        circuitListTextArea = new JTextArea();
+        circuitListTextArea.setBounds(320, 450, 150, 80);
+        circuitListTextArea.setEditable(false); // Hacer que el área de texto sea no editable
+        add(circuitListTextArea);
+
+        // Llenar el área de texto con los nombres de los circuitos
+        listarCircuitos();
+
         repaint();
     }
 
@@ -94,7 +110,7 @@ public class F1Gui extends JFrame {
         driverLabel.setBounds(20, 20, 150, 25);
         selectDriverDialog.add(driverLabel);
 
-        driverComboBox = new JComboBox<Driver>(drivers.toArray(new Driver[0]));
+        driverComboBox = new JComboBox<Driver>(drivers.toArray(new Driver[0])); //ACA HAY UN PROBLEMA
         driverComboBox.setBounds(180, 20, 200, 25);
         selectDriverDialog.add(driverComboBox);
 
@@ -204,8 +220,13 @@ public class F1Gui extends JFrame {
         }
     }
 
-
-
+    private void listarCircuitos() {
+        StringBuilder circuitosText = new StringBuilder();
+        for (Circuit circuit : circuits) {
+            circuitosText.append(circuit.getNombre()).append("\n");
+        }
+        circuitListTextArea.setText(circuitosText.toString());
+    }
 
     private boolean isDriverNumberUsed(int number) {
         // Debes implementar la lógica para verificar si el número de auto está en uso
