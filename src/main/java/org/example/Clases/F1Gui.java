@@ -62,6 +62,7 @@ public class F1Gui extends JFrame {
         });
         add(startButton);
         setVisible(true);
+
     }
 
     public void iniciarJuego()
@@ -93,8 +94,8 @@ public class F1Gui extends JFrame {
         createDriverButton.setVisible(true);
 
         // Boton lista de circuitos
-        JButton createCircuitButton = new JButton("Lista de circuitos");
-        createCircuitButton.setBounds(320, 480, 150, 30);
+        createCircuitButton = new JButton("Lista de circuitos");
+        createCircuitButton.setBounds(320, 460, 150, 30);
         createCircuitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,7 +103,18 @@ public class F1Gui extends JFrame {
             }
         });
         add(createCircuitButton);
-        //createCircuitButton.setVisible(true);
+
+        restartButton = new JButton("Salir");
+        restartButton.setBounds(320, 500, 150, 30);
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reiniciarJuego();
+            }
+        });
+        add(restartButton);
+
+        setVisible(true);
     }
 
     private void seleccionarPiloto()
@@ -338,6 +350,7 @@ public class F1Gui extends JFrame {
         JOptionPane.showMessageDialog(this, circuitosText.toString(), "Lista de Circuitos", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /*
     private void reiniciarJuego() {
         // Elimina todos los componentes de la ventana actual
         getContentPane().removeAll();
@@ -348,6 +361,16 @@ public class F1Gui extends JFrame {
         // Vuelve a pintar la ventana para que se muestren los cambios
         revalidate();
         repaint();
+    }
+
+     */
+
+    private void reiniciarJuego() {
+        getContentPane().removeAll(); // Elimina todos los componentes de la ventana actual
+        revalidate(); // Vuelve a pintar la ventana para mostrar los cambios
+        repaint();
+        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
+
     }
 
     private boolean isDriverNumberUsed(int number) {
