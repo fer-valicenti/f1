@@ -1,7 +1,6 @@
 package org.example.Clases;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,7 +8,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.sound.sampled.*;
 
-import static org.example.Clases.OpenF1Client.isDriverNumberUsed;
 
 //https://www.youtube.com/watch?v=6YYmZ8cQc7o&ab_channel=GeoCositasParaDummies
 
@@ -17,7 +15,7 @@ public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
     private JComboBox<Team> teamComboBox;
-    private JButton startButton, selectDriverButton, createDriverButton;
+    private JButton startButton, selectDriverButton, createDriverButton,createCircuitButton;
     private List<Team> teams;
     private List<Driver> drivers;
     private List<Circuit> circuits;
@@ -33,7 +31,9 @@ public class F1Gui extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-
+circuits=OpenF1Client.generarListaCircuitos();
+teams=OpenF1Client.generarGrilla();
+drivers=OpenF1Client.generarListaPilotos();
         //fondo
         ImageIcon backgroundIcon = new ImageIcon("src/main/java/org/example/imag/f1-24-game.jpg");
         backgroundLabel = new JLabel(backgroundIcon);
@@ -63,7 +63,7 @@ public class F1Gui extends JFrame {
 
         //booton de seleccionar piloto
         selectDriverButton = new JButton("Seleccionar Piloto");
-        selectDriverButton.setBounds(320, 360, 150, 30);
+        selectDriverButton.setBounds(320, 380, 150, 30);
         selectDriverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,9 +82,20 @@ public class F1Gui extends JFrame {
             }
         });
         add(createDriverButton);
+        createDriverButton.setVisible(true);
 
         // Área de texto para listar circuitos
-        JLabel circuitLabel = new JLabel("Circuitos:");
+        JButton createCircuitButton = new JButton("Lista de circuitos");
+        createCircuitButton.setBounds(320, 450, 150, 30);
+        createCircuitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listarCircuitos();
+            }
+        });
+        add(createCircuitButton);
+        createCircuitButton.setVisible(true);
+        /*JLabel circuitLabel = new JLabel("Circuitos:");
         circuitLabel.setBounds(320, 410, 150, 30);
         add(circuitLabel);
 
@@ -94,9 +105,9 @@ public class F1Gui extends JFrame {
         add(circuitListTextArea);
 
         // Llenar el área de texto con los nombres de los circuitos
-        listarCircuitos();
+        listarCircuitos(OpenF1Client.generarListaCircuitos());
 
-        repaint();
+        repaint();*/
     }
 
     private void seleccionarPiloto()
@@ -195,7 +206,7 @@ public class F1Gui extends JFrame {
                         firstName, lastName, country, number);
 
                 // Agregar el nuevo piloto a la lista de pilotos
-                // drivers.add(newDriver); // Debes agregarlo a la lista de pilotos en tu aplicación
+                drivers.add(newDriver); // Debes agregarlo a la lista de pilotos en tu aplicación
 
                 // Imprimir los detalles del nuevo piloto creado
                 JOptionPane.showMessageDialog(createDriverDialog, "Nuevo piloto creado:\n" + newDriver.toString(), "Piloto Creado", JOptionPane.INFORMATION_MESSAGE);
@@ -203,6 +214,7 @@ public class F1Gui extends JFrame {
                 createDriverDialog.dispose();
                 // selectCircuitButton.setEnabled(true); // Habilitar selección de circuito después de crear un piloto
             }
+            //seleccionar equipo
         });
         createDriverDialog.add(createButton);
 

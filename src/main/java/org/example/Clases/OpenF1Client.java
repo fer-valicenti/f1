@@ -20,15 +20,15 @@ public class OpenF1Client {
        // System.out.println(drivers.toString());
         List<Team> teams=generarGrilla();
         //System.out.println(teams);
-        //List<Driver> drivers=generarListaPilotos();
-       // List<Circuit> circuits=generarListaCircuitos();
-        //Campeonato campeonato = new Campeonato(teams, circuits);
+        List<Driver> drivers=generarListaPilotos();
+        List<Circuit> circuits=generarListaCircuitos();
+        Campeonato campeonato = new Campeonato(teams, circuits);
         //String resultados = campeonato.simularCameponato();
-       // System.out.println(resultados);
+       //System.out.println(resultados);
         //SwingUtilities.invokeLater(OpenF1GUI::new);
-        //F1Gui interfaz = new F1Gui();
-        createDriver(teams);
-        System.out.println(teams.toString());
+        F1Gui interfaz = new F1Gui();
+        //createDriver(teams);
+        //System.out.println(teams.toString());
 
 
     }
