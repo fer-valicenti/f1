@@ -17,7 +17,8 @@ public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
     private JComboBox<Team> teamComboBox;
-    private JButton startButton,restartButton, selectDriverButton, createDriverButton,createCircuitButton,selectChangeDriverButton,selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton;
+    private JComboBox<String> circuitComboBox;
+    private JButton startButton,restartButton, selectDriverButton, createDriverButton,createCircuitButton,selectChangeDriverButton,selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton, correrGranPrixButton;
     private List<Team> teams;
     private List<Driver> drivers;
     private List<Circuit> circuits;
@@ -114,6 +115,15 @@ public class F1Gui extends JFrame {
         });
         add(restartButton);
 
+        // Si el usuario ha seleccionado "Iniciar Campeonato", desaparece el botón "Gran Prix"
+        if (iniciarCampeonatoButton == null) {
+            correrGranPrixButton.setVisible(false);
+        }
+        // Si el usuario ha seleccionado "Gran Prix", desaparece el botón "Iniciar Campeonato"
+        if (correrGranPrixButton == null) {
+            iniciarCampeonatoButton.setVisible(false);
+        }
+
         setVisible(true);
     }
 
@@ -164,6 +174,17 @@ public class F1Gui extends JFrame {
                 }
             });
             add(iniciarCampeonatoButton);
+
+            correrGranPrixButton = new JButton("Correr Gran Prix");
+            correrGranPrixButton.setBounds(320, 440, 150, 30);
+            correrGranPrixButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    correrGranPrix();
+                }
+            });
+            add(correrGranPrixButton);
+
             repaint();
         }
     }
@@ -304,6 +325,15 @@ public class F1Gui extends JFrame {
             String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(circuito));
 
             resultadosTextArea.setText(resultadoCircuito);
+            resultadosTextArea.setCaretPosition(0);
+
+            //para que la barra comience de arriba
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    scrollPane.getViewport().setViewPosition(new Point(0, 0));
+                }
+            });
+
             circuitoActual++;
 
             if(circuitoActual >= circuits.size()) {
@@ -328,18 +358,6 @@ public class F1Gui extends JFrame {
         resultadosTextArea.setCaretPosition(0);
         guardarPartida(numeroPartida, resultadoFinal);
         numeroPartida++;
-
-        restartButton = new JButton("Salir");
-        restartButton.setBounds(320, 430, 150, 30);
-        restartButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                reiniciarJuego();
-            }
-        });
-        add(restartButton);
-        repaint();
-
     }
 
     private void listarCircuitos() {
@@ -350,27 +368,54 @@ public class F1Gui extends JFrame {
         JOptionPane.showMessageDialog(this, circuitosText.toString(), "Lista de Circuitos", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /*
-    private void reiniciarJuego() {
-        // Elimina todos los componentes de la ventana actual
-        getContentPane().removeAll();
+    private void correrGranPrix() {
+        if (selectedDriver != null) {
+            // Mostrar cuadro de diálogo para seleccionar circuito
+            String[] circuitNames = new String[circuits.size()];
+            for (int i = 0; i < circuits.size(); i++) {
+                circuitNames[i] = circuits.get(i).getNombre();
+            }
+            String selectedCircuitName = (String) JOptionPane.showInputDialog(this, "Selecciona un circuito:", "Seleccionar Circuito", JOptionPane.QUESTION_MESSAGE, null, circuitNames, circuitNames[0]);
 
-        // Reinicia el juego volviendo al estado inicial
-        iniciarJuego();
+            // Buscar el circuito seleccionado
+            Circuit selectedCircuit = null;
+            for (Circuit circuit : circuits) {
+                if (circuit.getNombre().equals(selectedCircuitName)) {
+                    selectedCircuit = circuit;
+                    break;
+                }
+            }
 
-        // Vuelve a pintar la ventana para que se muestren los cambios
-        revalidate();
-        repaint();
+            if (selectedCircuit != null) {
+                // Simular carrera en el circuito seleccionado
+                String nombreCircuito = selectedCircuit.getNombre();
+                String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(selectedCircuit));
+                mostrarTablaResultado(resultadoCircuito, "Resultado del Gran Prix");
+                guardarPartida(numeroPartida, resultadoCircuito);
+                numeroPartida++;
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor, selecciona un circuito", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un piloto primero", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-     */
+    private void mostrarTablaResultado(String resultado, String titulo) {
+        JFrame frame = new JFrame(titulo);
+        JTextArea textArea = new JTextArea(resultado);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane);
+        frame.setSize(400, 300);
+        frame.setVisible(true);
+    }
 
     private void reiniciarJuego() {
         getContentPane().removeAll(); // Elimina todos los componentes de la ventana actual
+        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
         revalidate(); // Vuelve a pintar la ventana para mostrar los cambios
         repaint();
-        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
-
     }
 
     private boolean isDriverNumberUsed(int number) {
