@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import javax.sound.sampled.*;
@@ -30,6 +31,7 @@ public class F1Gui extends JFrame {
 
     public static int circuitoActual = 0; //Declarar circuitoActual como un campo de clase
 
+    public static int numeroPartida = 1;
     public F1Gui()
     {
         setTitle("FI GAME");
@@ -268,9 +270,9 @@ public class F1Gui extends JFrame {
         {
             Circuit circuito = circuits.get(circuitoActual);
 
-            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/gif - Acceso directo.lnk");
+            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/gif next race.gif");
             JLabel loadingLabel = new JLabel(loadingIcon);
-            loadingLabel.setBounds(400, 200, loadingIcon.getIconWidth(), loadingIcon.getIconHeight());
+            loadingLabel.setBounds(320, 430, loadingIcon.getIconWidth(), loadingIcon.getIconHeight());
             add(loadingLabel);
             loadingLabel.setVisible(true);
 
@@ -292,8 +294,7 @@ public class F1Gui extends JFrame {
             resultadosTextArea.setText(resultadoCircuito);
             circuitoActual++;
 
-            if(circuitoActual >= circuits.size())
-            {
+            if(circuitoActual >= circuits.size()) {
                 siguienteButton.setText("Ver Resultado Final");
                 siguienteButton.addActionListener(new ActionListener() {
                     @Override
@@ -303,6 +304,7 @@ public class F1Gui extends JFrame {
                     }
                 });
             }
+            guardarResultadosEnArchivo(resultadoCircuito);
         }
     }
 
@@ -312,6 +314,8 @@ public class F1Gui extends JFrame {
         String resultadoFinal = campeonato.simularCameponato();
         resultadosTextArea.setText(resultadoFinal);
         resultadosTextArea.setCaretPosition(0);
+        guardarPartida(numeroPartida, resultadoFinal);
+        numeroPartida++;
 
         restartButton = new JButton("Salir");
         restartButton.setBounds(320, 430, 150, 30);
@@ -432,5 +436,30 @@ public class F1Gui extends JFrame {
         selectTeamDialog.setVisible(true);
 
     }
+
+
+    //ARCHIVOS
+    private void guardarResultadosEnArchivo(String resultado) {
+        String nombreArchivo = "resultados" + numeroPartida + ".txt";
+        try {
+            FileWriter writer = new FileWriter(nombreArchivo);
+            writer.write(resultado);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void guardarPartida(int numeroPartida, String resultado) {
+        String nombreArchivo = "resultados" + numeroPartida + ".txt";
+        try {
+            FileWriter writer = new FileWriter(nombreArchivo);
+            writer.write(resultado);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
 
