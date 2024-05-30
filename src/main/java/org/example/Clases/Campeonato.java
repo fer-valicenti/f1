@@ -25,7 +25,9 @@ public class Campeonato implements IManejoDeCampeonatos {
         this.totalCarreras = circuitos.size(); //establece el numero total de carreras
     }
 
+
     public String simularCameponato() {
+    /*
         StringBuilder campeonatoResultado = new StringBuilder();
         Map<Driver, Integer> puntosTotales = new HashMap<>();
         Map<Team, Integer> puntosTotalesEquiposFinal = new HashMap<>();
@@ -47,7 +49,40 @@ public class Campeonato implements IManejoDeCampeonatos {
         campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquiposFinal));
 
         return campeonatoResultado.toString();
+        */
+        StringBuilder campeonatoResultado = new StringBuilder();
+        Map<Driver, Integer> puntosTotales = new HashMap<>();
+        Map<Team, Integer> puntosTotalesEquiposFinal = new HashMap<>();
+        Map<Driver, Integer> puntosCarrera = new HashMap<>();
+
+        // Iterar sobre cada circuito
+        for (Circuit circuito : circuitos) {
+            puntosCarrera = simularCarrera(circuito);
+            campeonatoResultado.append("Tabla de posiciones en: ").append(circuito.getNombre()).append(":\n\n");
+            campeonatoResultado.append(generarTablaPosicionesCarrera(puntosCarrera)).append("\n");
+            Map<Team, Integer> puntosTotalesEquipos = new HashMap<>();
+            actualizarPuntosTotales(puntosTotales, puntosCarrera);
+            actualizarPuntosPorEquipo(puntosTotalesEquipos, puntosCarrera);
+            campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquipos));
+            puntosTotalesEquiposFinal = puntosTotalesEquipos;
+            // Mostrar los resultados del circuito actual
+            System.out.println(campeonatoResultado.toString());
+            campeonatoResultado.setLength(0); // Limpiar el StringBuilder
+        }
+
+        // Mostrar la tabla de posiciones final del campeonato de pilotos
+        campeonatoResultado.append("\nTabla de posiciones Final del Campeonato: \n\n");
+        campeonatoResultado.append(generarTablaPosiciones(puntosCarrera));
+
+        // Mostrar la tabla de posiciones final del campeonato de constructores
+        campeonatoResultado.append("\nTabla de posiciones Final del Campeonato de Constructores: \n\n");
+        campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquiposFinal));
+
+        return campeonatoResultado.toString();
+
     }
+
+
 
     public Map<Driver, Integer> simularCarrera(Circuit circuito) {
         Random random = new Random();
