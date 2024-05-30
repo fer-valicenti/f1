@@ -38,7 +38,7 @@ public class F1Gui extends JFrame {
         setLayout(null);
         circuits=OpenF1Client.generarListaCircuitos();
         teams=OpenF1Client.generarGrilla();
-        drivers=OpenF1Client.generarListaPilotos();
+        drivers=OpenF1Client.generarListaPilotos(teams);
 
         //fondo
         ImageIcon backgroundIcon = new ImageIcon("src/main/java/org/example/imag/f1-24-game.jpg");
@@ -220,14 +220,14 @@ public class F1Gui extends JFrame {
                         firstName, lastName, country, number);
 
                 // Agregar el nuevo piloto a la lista de pilotos
-                drivers.add(newDriver); // Debes agregarlo a la lista de pilotos en tu aplicación
-
+                //drivers.add(newDriver); // Debes agregarlo a la lista de pilotos en tu aplicación
 
                 // Imprimir los detalles del nuevo piloto creado
                 JOptionPane.showMessageDialog(createDriverDialog, "Nuevo piloto creado:\n" + newDriver.toString(), "Piloto Creado", JOptionPane.INFORMATION_MESSAGE);
 
                 createDriverDialog.dispose();
                 seleccionarEquipo(newDriver);
+                drivers=OpenF1Client.generarListaPilotos(teams);
                 // selectCircuitButton.setEnabled(true); // Habilitar selección de circuito después de crear un piloto
             }
             //seleccionar equipo

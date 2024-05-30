@@ -20,7 +20,7 @@ public class OpenF1Client {
        // System.out.println(drivers.toString());
         List<Team> teams=generarGrilla();
         //System.out.println(teams);
-        List<Driver> drivers=generarListaPilotos();
+        List<Driver> drivers=generarListaPilotos(teams);
         List<Circuit> circuits=generarListaCircuitos();
         Campeonato campeonato = new Campeonato(teams, circuits);
         //String resultados = campeonato.simularCameponato();
@@ -76,48 +76,12 @@ public class OpenF1Client {
         return circuits;
     }
 
-    public static List<Driver> generarListaPilotos(){
+    public static List<Driver> generarListaPilotos(List<Team> equipos){
         List<Driver> drivers=new ArrayList<>();
-        Driver piloto1 = new Driver("NED",1,"Max","https://www.formula1.com/content/dam/fom-website/drivers/M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png","Verstappen","VER");
-        Driver piloto2 = new Driver("MEX",11,"Sergio","https://www.formula1.com/content/dam/fom-website/drivers/S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png","Perez","PER");
-        Driver piloto3 = new Driver("ESP",55,"Carlos","https://www.formula1.com/content/dam/fom-website/drivers/C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png","Sainz","SAI");
-        Driver piloto4 = new Driver("MON",16,"Charles","https://www.formula1.com/content/dam/fom-website/drivers/C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png","Leclerc","LEC");
-        Driver piloto5 = new Driver("ENG",44,"Lewis","https://www.formula1.com/content/dam/fom-website/drivers/L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png","Hamilton","HAM");
-        Driver piloto6 = new Driver("ENG",63,"George","https://www.formula1.com/content/dam/fom-website/drivers/G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png","Russell","RUS");
-        Driver piloto7 = new Driver("ENG",4,"Lando","https://www.formula1.com/content/dam/fom-website/drivers/L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png","Norris","NOR");
-        Driver piloto8 = new Driver("AUS",81,"Oscar","https://www.formula1.com/content/dam/fom-website/drivers/O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png","Piastri","PIA");
-        Driver piloto9 = new Driver("FRA",31,"Esteban","https://www.formula1.com/content/dam/fom-website/drivers/E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png","Ocon","OCO");
-        Driver piloto10 = new Driver("FRA",10,"Pierre","https://www.formula1.com/content/dam/fom-website/drivers/P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png","Gasly","GAS");
-        Driver piloto11 = new Driver("ESP",14,"Fernando","https://www.formula1.com/content/dam/fom-website/drivers/F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png","Alonso","ALO");
-        Driver piloto12 = new Driver("CAN",18,"Lance","https://www.formula1.com/content/dam/fom-website/drivers/L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png","Stroll","STR");
-        Driver piloto13 = new Driver("AUS",3,"Daniel","https://www.formula1.com/content/dam/fom-website/drivers/D/DANRIC01_Daniel_Ricciardo/danric01.png.transform/1col/image.png","Ricciardo","RIC");
-        Driver piloto14 = new Driver("JAP",22,"Yuki","https://www.formula1.com/content/dam/fom-website/drivers/Y/YUKTSU01_Yuki_Tsunoda/yuktsu01.png.transform/1col/image.png","Tsunoda","TSU");
-        Driver piloto15 = new Driver("FIN",77,"Valtteri","https://www.formula1.com/content/dam/fom-website/drivers/V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png","Bottas","BOT");
-        Driver piloto16 = new Driver("CHI",24,"Guanyu","https://www.formula1.com/content/dam/fom-website/drivers/G/GUAZHO01_Guanyu_Zhou/guazho01.png.transform/1col/image.png","Zhou","ZHO");
-        Driver piloto17 = new Driver("TAI",23,"Alex","https://www.formula1.com/content/dam/fom-website/drivers/A/ALEALB01_Alexander_Albon/alealb01.png.transform/1col/image.png","Albon","ALB");
-        Driver piloto18 = new Driver("USA",2,"Logan","https://www.formula1.com/content/dam/fom-website/drivers/L/LOGSAR01_Logan_Sargeant/logsar01.png.transform/1col/image.png","Sargeant","SAR");
-        Driver piloto19 = new Driver("DEN",20,"Kevin","https://www.formula1.com/content/dam/fom-website/drivers/K/KEVMAG01_Kevin_Magnussen/kevmag01.png.transform/1col/image.png","Magnussen","MAG");
-        Driver piloto20 = new Driver("GER",27,"Nico","https://www.formula1.com/content/dam/fom-website/drivers/N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png","Hulkenberg","HUL");
-
-        drivers.add(piloto1);
-        drivers.add(piloto2);
-        drivers.add(piloto3);
-        drivers.add(piloto4);
-        drivers.add(piloto5);
-        drivers.add(piloto6);
-        drivers.add(piloto7);
-        drivers.add(piloto8);
-        drivers.add(piloto9);
-        drivers.add(piloto10);
-        drivers.add(piloto12);
-        drivers.add(piloto13);
-        drivers.add(piloto14);
-        drivers.add(piloto15);
-        drivers.add(piloto16);
-        drivers.add(piloto17);
-        drivers.add(piloto18);
-        drivers.add(piloto19);
-        drivers.add(piloto20);
+        for(Team equipo: equipos){
+            drivers.add(equipo.getPrimer_piloto());
+            drivers.add(equipo.getSegundo_piloto());
+        }
         return drivers;
     }
 
