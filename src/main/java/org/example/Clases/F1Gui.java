@@ -15,13 +15,14 @@ public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
     private JComboBox<Team> teamComboBox;
-    private JButton startButton, selectDriverButton, createDriverButton,createCircuitButton;
+    private JButton startButton, selectDriverButton, createDriverButton,createCircuitButton,selectChangeDriverButton,selectChangeDriverButton2;
     private List<Team> teams;
     private List<Driver> drivers;
     private List<Circuit> circuits;
     private Campeonato campeonato;
     private JLabel backgroundLabel;
     private Driver selectedDriver;
+    private Team selectedTeam;
     private JTextArea circuitListTextArea;
     private Team selectTeam;
     private Clip clip;
@@ -212,6 +213,7 @@ drivers=OpenF1Client.generarListaPilotos();
                 JOptionPane.showMessageDialog(createDriverDialog, "Nuevo piloto creado:\n" + newDriver.toString(), "Piloto Creado", JOptionPane.INFORMATION_MESSAGE);
 
                 createDriverDialog.dispose();
+                seleccionarEquipo(newDriver);
                 // selectCircuitButton.setEnabled(true); // Habilitar selección de circuito después de crear un piloto
             }
             //seleccionar equipo
@@ -265,4 +267,69 @@ drivers=OpenF1Client.generarListaPilotos();
             e.printStackTrace();
         }
     }
+    private void seleccionarEquipo(Driver nuevoPiloto){
+        JDialog selectTeamDialog = new JDialog(this, "Seleccionar Escuderia", true);
+        selectTeamDialog.setSize(400, 300);
+        selectTeamDialog.setLayout(null);
+        JLabel teamLabel = new JLabel("Seleccione su escuderia: ");
+        teamLabel.setBounds(20, 20, 150, 25);
+        selectTeamDialog.add(teamLabel);
+
+        teamComboBox = new JComboBox<Team>(teams.toArray(new Team[0])); //ACA HAY UN PROBLEMA
+        teamComboBox.setBounds(180, 20, 200, 25);
+        selectTeamDialog.add(teamComboBox);
+
+        JButton selectButton = new JButton("Seleccionar");
+        selectButton.setBounds(150, 200, 100, 30);
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectedTeam = (Team) teamComboBox.getSelectedItem();
+                selectTeamDialog.dispose();
+reemplazarPiloto(selectedTeam,nuevoPiloto);
+
+            }
+        });
+        selectTeamDialog.add(selectButton);
+
+        selectTeamDialog.setVisible(true);
+    }
+
+private void reemplazarPiloto(Team equipo,Driver nuevoPiloto){
+    JDialog selectTeamDialog = new JDialog(this, "Seleccionar Piloto a reemplazar", true);
+    selectTeamDialog.setSize(400, 300);
+    selectTeamDialog.setLayout(null);
+    JLabel teamLabel = new JLabel("Seleccione el piloto a reemplazar: ");
+    teamLabel.setBounds(20, 20, 300, 25);
+    selectTeamDialog.add(teamLabel);
+
+
+
+    //booton de seleccionar piloto
+    selectChangeDriverButton = new JButton(equipo.getPrimer_piloto().getFull_name());
+    selectChangeDriverButton.setBounds(80, 50, 100, 30);
+    selectChangeDriverButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            equipo.setPrimer_piloto(nuevoPiloto);
+            selectTeamDialog.dispose();
+        }
+    });
+    selectTeamDialog.add(selectChangeDriverButton);
+    selectChangeDriverButton2 = new JButton(equipo.getSegundo_piloto().getFull_name());
+    selectChangeDriverButton2.setBounds(160, 50, 100, 30);
+    selectChangeDriverButton2.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            equipo.setSegundo_piloto(nuevoPiloto);
+            selectTeamDialog.dispose();
+            System.out.println(teams.toString());
+        }
+    });
+    selectTeamDialog.add(selectChangeDriverButton2);
+
+    selectTeamDialog.setVisible(true);
+
 }
+}
+

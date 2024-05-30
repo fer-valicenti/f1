@@ -28,7 +28,7 @@ public class OpenF1Client {
         //SwingUtilities.invokeLater(OpenF1GUI::new);
         F1Gui interfaz = new F1Gui();
         //createDriver(teams);
-        //System.out.println(teams.toString());
+       //System.out.println(teams.toString());
 
 
     }

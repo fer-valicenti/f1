@@ -51,11 +51,15 @@ public class Team {
         this.primer_piloto = primer_piloto;
     }
 
+    /*@Override
+    public String toString2() {
+        return nombre;
+    }*/
+
     @Override
     public String toString() {
-        return
-                "\n Equipo= " + nombre + '\'' +
-                "\n Piloto 1=" + primer_piloto +
-                "\n Piloto 2=" + segundo_piloto;
+        return "\n Equipo: "+ nombre +
+                "\n Primer piloto=" + primer_piloto +
+                "\n Segundo piloto" + segundo_piloto;
     }
 }
