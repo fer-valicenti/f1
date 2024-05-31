@@ -18,7 +18,6 @@ public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
     private JComboBox<Team> teamComboBox;
-    private JComboBox<String> circuitComboBox;
     private JButton startButton,restartButton, selectDriverButton, createDriverButton,createCircuitButton,selectChangeDriverButton,selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton, correrGranPrixButton;
     private List<Team> teams;
     private List<Driver> drivers;
@@ -494,7 +493,7 @@ public class F1Gui extends JFrame {
 
         //booton de seleccionar piloto
         selectChangeDriverButton = new JButton(equipo.getPrimer_piloto().getFull_name());
-        selectChangeDriverButton.setBounds(100, 50, 100, 30);
+        selectChangeDriverButton.setBounds(50, 60, 150, 30);
         selectChangeDriverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -504,7 +503,7 @@ public class F1Gui extends JFrame {
         });
         selectTeamDialog.add(selectChangeDriverButton);
         selectChangeDriverButton2 = new JButton(equipo.getSegundo_piloto().getFull_name());
-        selectChangeDriverButton2.setBounds(200, 50, 100, 30);
+        selectChangeDriverButton2.setBounds(200, 60, 150, 30);
         selectChangeDriverButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
