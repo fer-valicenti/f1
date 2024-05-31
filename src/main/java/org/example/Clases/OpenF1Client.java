@@ -56,7 +56,7 @@ public class OpenF1Client {
                 JSONArray jsonArray = new JSONArray(response.toString());
 
                 // Procesar el JSONArray y construir objetos Circuit
-                for (int i = 0; i < jsonArray.length(); i++) {
+                for (int i = 0; i < 23; i++) {
                     JSONObject circuitJson = jsonArray.getJSONObject(i);
 
                     Circuit circuit = new Circuit();

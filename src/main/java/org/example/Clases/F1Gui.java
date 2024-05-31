@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.sound.sampled.*;
 
@@ -27,7 +28,7 @@ public class F1Gui extends JFrame {
     private Driver selectedDriver;
     private Team selectedTeam;
     private Clip clip;
-    private JTextArea resultadosTextArea;
+    private JTextArea resultadosTextArea,textArea;
     private JScrollPane scrollPane;
 
     public static int circuitoActual = 0; //Declarar circuitoActual como un campo de clase
@@ -388,6 +389,10 @@ public class F1Gui extends JFrame {
 
             if (selectedCircuit != null) {
                 // Simular carrera en el circuito seleccionado
+                List<Circuit> circuito= new ArrayList<>();
+                circuito.add(selectedCircuit);
+
+                campeonato = new Campeonato(teams,circuito);
                 String nombreCircuito = selectedCircuit.getNombre();
                 String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(selectedCircuit));
                 mostrarTablaResultado(resultadoCircuito, "Resultado del Gran Prix");
@@ -403,7 +408,7 @@ public class F1Gui extends JFrame {
 
     private void mostrarTablaResultado(String resultado, String titulo) {
         JFrame frame = new JFrame(titulo);
-        JTextArea textArea = new JTextArea(resultado);
+        textArea = new JTextArea(resultado);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         frame.add(scrollPane);
