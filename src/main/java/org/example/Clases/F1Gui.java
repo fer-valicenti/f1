@@ -12,7 +12,7 @@ import java.util.List;
 import javax.sound.sampled.*;
 
 
-//https://www.youtube.com/watch?v=6YYmZ8cQc7o&ab_channel=GeoCositasParaDummies
+//https://youtu.be/mGkrbzJZCoE
 
 public class F1Gui extends JFrame {
 
@@ -116,15 +116,6 @@ public class F1Gui extends JFrame {
         });
         add(restartButton);
 
-        // Si el usuario ha seleccionado "Iniciar Campeonato", desaparece el botón "Gran Prix"
-        if (iniciarCampeonatoButton == null) {
-            correrGranPrixButton.setVisible(false);
-        }
-        // Si el usuario ha seleccionado "Gran Prix", desaparece el botón "Iniciar Campeonato"
-        if (correrGranPrixButton == null) {
-            iniciarCampeonatoButton.setVisible(false);
-        }
-
         setVisible(true);
     }
 
@@ -176,15 +167,16 @@ public class F1Gui extends JFrame {
             });
             add(iniciarCampeonatoButton);
 
-            correrGranPrixButton = new JButton("Correr Gran Prix");
+            correrGranPrixButton = new JButton("¡Correr Grand Prix!");
             correrGranPrixButton.setBounds(320, 440, 150, 30);
             correrGranPrixButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    correrGranPrix();
+                    correrGrandPrix();
                 }
             });
             add(correrGranPrixButton);
+
 
             repaint();
         }
@@ -295,6 +287,12 @@ public class F1Gui extends JFrame {
        });
        add(siguienteButton);
 
+        // Ocultar el botón de correr Grand Prix
+        if(correrGranPrixButton != null)
+       {
+           correrGranPrixButton.setVisible(false);
+       }
+
        mostrarResultadoCircuitoActual();
 
     }
@@ -369,7 +367,13 @@ public class F1Gui extends JFrame {
         JOptionPane.showMessageDialog(this, circuitosText.toString(), "Lista de Circuitos", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void correrGranPrix() {
+    private void correrGrandPrix() {
+
+        // Ocultar el botón de Iniciar Campeonato
+        if (iniciarCampeonatoButton != null) {
+            iniciarCampeonatoButton.setVisible(false);
+        }
+
         if (selectedDriver != null) {
             // Mostrar cuadro de diálogo para seleccionar circuito
             String[] circuitNames = new String[circuits.size()];
@@ -407,13 +411,17 @@ public class F1Gui extends JFrame {
     }
 
     private void mostrarTablaResultado(String resultado, String titulo) {
-        JFrame frame = new JFrame(titulo);
+        JFrame parentFrame = (JFrame) SwingUtilities.getRoot(this); // Obtenemos el JFrame principal
         textArea = new JTextArea(resultado);
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
-        frame.add(scrollPane);
-        frame.setSize(400, 300);
-        frame.setVisible(true);
+
+        // Creamos un JDialog modal que muestre la tabla de resultados
+        JDialog dialog = new JDialog(parentFrame, titulo, true);
+        dialog.getContentPane().add(scrollPane);
+        dialog.setSize(400, 300);
+        dialog.setLocationRelativeTo(parentFrame); // Aparece en el centro del JFrame principal
+        dialog.setVisible(true);
     }
 
     private void reiniciarJuego() {
