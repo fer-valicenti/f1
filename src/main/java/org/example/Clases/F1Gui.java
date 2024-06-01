@@ -418,16 +418,33 @@ public class F1Gui extends JFrame {
         // Creamos un JDialog modal que muestre la tabla de resultados
         JDialog dialog = new JDialog(parentFrame, titulo, true);
         dialog.getContentPane().add(scrollPane);
-        dialog.setSize(400, 300);
+        dialog.setSize(600, 300);
         dialog.setLocationRelativeTo(parentFrame); // Aparece en el centro del JFrame principal
         dialog.setVisible(true);
     }
 
     private void reiniciarJuego() {
+
         getContentPane().removeAll(); // Elimina todos los componentes de la ventana actual
         new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
         revalidate(); // Vuelve a pintar la ventana para mostrar los cambios
         repaint();
+        /*
+        startButton.setVisible(true);
+        selectDriverButton.setVisible(false);
+        createDriverButton.setVisible(false);
+        createCircuitButton.setVisible(false);                  //me vuelve al inicio pero queda el boton Salir
+        iniciarCampeonatoButton.setVisible(false);
+        correrGranPrixButton.setVisible(false);
+        siguienteButton.setVisible(false);
+        resultadosTextArea.setVisible(false);
+        scrollPane.setVisible(false);
+        backgroundLabel.setVisible(true);
+        // Detener la reproducción de música si está en curso
+        if (clip != null) {
+            clip.stop();
+        }
+         */
     }
 
     private boolean isDriverNumberUsed(int number) {

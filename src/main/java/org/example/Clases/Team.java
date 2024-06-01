@@ -54,7 +54,7 @@ public class Team extends Competidor {
 
     @Override
     public String toString() {
-        return "Equipo: " + getNombre();
+        return getNombre();
     }
 
 
