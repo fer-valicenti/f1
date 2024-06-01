@@ -25,31 +25,15 @@ public class Campeonato implements IManejoDeCampeonatos {
         this.totalCarreras = circuitos.size(); //establece el numero total de carreras
     }
 
+    /**
+       Simula todo el campeonato iterando sobre cada circuito
+        simulando carreras, actualizando puntos y generando resultados.
+         Devuelve una cadena que contiene los resultados del campeonato.
+
+     */
 
     public String simularCameponato() {
-    /*
-        StringBuilder campeonatoResultado = new StringBuilder();
-        Map<Driver, Integer> puntosTotales = new HashMap<>();
-        Map<Team, Integer> puntosTotalesEquiposFinal = new HashMap<>();
-        Map<Driver, Integer> puntosCarrera = new HashMap<>();
-        for (Circuit circuito : circuitos) {
-            puntosCarrera = simularCarrera(circuito);
-            campeonatoResultado.append("Tabla de posiciones en: ").append(circuito.getNombre()).append(":\n\n");
-            campeonatoResultado.append(generarTablaPosicionesCarrera(puntosCarrera)).append("\n");
-            Map<Team, Integer> puntosTotalesEquipos = new HashMap<>();
-            actualizarPuntosTotales(puntosTotales, puntosCarrera);
-            actualizarPuntosPorEquipo(puntosTotalesEquipos, puntosCarrera);
-            campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquipos));
-            puntosTotalesEquiposFinal=puntosTotalesEquipos;
-        }
-        campeonatoResultado.append("\nTabla de posiciones final del Campeonato: \n\n");
-        campeonatoResultado.append(generarTablaPosiciones(puntosCarrera));
 
-        campeonatoResultado.append("\nTabla de posiciones final del Campeonato de Constructores: \n\n");
-        campeonatoResultado.append(generarTablaPosicionesEquipos(puntosTotalesEquiposFinal));
-
-        return campeonatoResultado.toString();
-        */
         StringBuilder campeonatoResultado = new StringBuilder();
         Map<Driver, Integer> puntosTotales = new HashMap<>();
         Map<Team, Integer> puntosTotalesEquiposFinal = new HashMap<>();
@@ -83,6 +67,11 @@ public class Campeonato implements IManejoDeCampeonatos {
     }
 
 
+    /**
+     * Simula una carrera para un circuito dado generando tiempos de vuelta,
+     * ajustando los tiempos en función del rendimiento previo, asignando puntos
+     * y devolviendo los puntos para la carrera.
+     */
 
     public Map<Driver, Integer> simularCarrera(Circuit circuito) {
         Random random = new Random();
@@ -114,6 +103,11 @@ public class Campeonato implements IManejoDeCampeonatos {
         return puntos;
     }
 
+    /**
+     * Genera una tabla formateada de posiciones para una sola carrera
+     * basada en los puntos obtenidos por los pilotos en la carrera.
+     */
+
     public String generarTablaPosicionesCarrera(Map<Driver, Integer> puntosCarrera) {
         StringBuilder tabla = new StringBuilder();
         List<Driver> pilotosOrdenadosPorPuntos = new ArrayList<>(puntosCarrera.keySet());
@@ -124,6 +118,11 @@ public class Campeonato implements IManejoDeCampeonatos {
         }
         return tabla.toString();
     }
+
+    /**
+     * Genera una tabla formateada de posiciones finales para los pilotos
+     * basada en los puntos totales obtenidos a lo largo del campeonato.
+     */
 
     public String generarTablaPosiciones(Map<Driver, Integer> puntosTotales) {
         StringBuilder tabla = new StringBuilder();
@@ -136,6 +135,12 @@ public class Campeonato implements IManejoDeCampeonatos {
 
         return tabla.toString();
     }
+
+
+    /**
+     * Genera una tabla formateada de posiciones finales para los equipos
+     * basada en los puntos totales obtenidos a lo largo del campeonato.
+     */
 
     public String generarTablaPosicionesEquipos(Map<Team, Integer> puntosTotales)
     {
@@ -160,6 +165,10 @@ public class Campeonato implements IManejoDeCampeonatos {
         }
     }
 
+    /**
+     * Actualiza los puntos totales de los pilotos en función de los puntos
+     * obtenidos en una carrera específica.
+     */
     public void actualizarPuntosTotales(Map<Driver, Integer> puntosTotales, Map<Driver, Integer> puntosCarrera)
     {
         for (Map.Entry<Driver, Integer> entry : puntosCarrera.entrySet()) {
@@ -170,6 +179,10 @@ public class Campeonato implements IManejoDeCampeonatos {
         }
     }
 
+    /**
+     * Actualiza el mejor tiempo de vuelta de un piloto si el tiempo actual
+     * es mejor que el tiempo registrado previamente.
+     */
     public void actualizarMejorTiempo(Driver piloto, double tiempoVuelta)
     {
         double mejorTiempo = mejoresTiempos.getOrDefault(piloto, Double.MAX_VALUE);
@@ -178,6 +191,10 @@ public class Campeonato implements IManejoDeCampeonatos {
         }
     }
 
+    /**
+     * Actualiza los puntos totales de los equipos en función de los puntos
+     * obtenidos por sus pilotos en una carrera específica.
+     */
     public void actualizarPuntosPorEquipo(Map<Team, Integer> puntosTotalesEquipos, Map<Driver, Integer> puntosCarrera)
     {
         for(Map.Entry<Driver, Integer> entry : puntosCarrera.entrySet())

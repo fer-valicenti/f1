@@ -36,7 +36,7 @@ public class F1Gui extends JFrame {
     public F1Gui()
     {
         setTitle("FI GAME");
-        setSize(800, 600);
+        setSize(800, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         circuits=OpenF1Client.generarListaCircuitos();
