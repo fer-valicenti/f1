@@ -297,14 +297,13 @@ public class F1Gui extends JFrame {
     }
     private void mostrarResultadoCircuitoActual()
     {
-        /*
         if(circuitoActual < circuits.size())
         {
             Circuit circuito = circuits.get(circuitoActual);
 
-            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/gif.gif");
+            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/gif next race.gif");
             JLabel loadingLabel = new JLabel(loadingIcon);
-            loadingLabel.setBounds(resultadosTextArea.getBounds());
+            loadingLabel.setBounds(320, 430, loadingIcon.getIconWidth(), loadingIcon.getIconHeight());
             add(loadingLabel);
             loadingLabel.setVisible(true);
 
@@ -318,8 +317,7 @@ public class F1Gui extends JFrame {
             }
 
             // Quitar la animación GIF
-            //loadingLabel.setVisible(false);
-            repaint();
+            loadingLabel.setVisible(false);
 
             String nombreCircuito = circuito.getNombre();
             String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(circuito));
@@ -348,72 +346,10 @@ public class F1Gui extends JFrame {
             }
             guardarResultadosEnArchivo(resultadoCircuito);
         }
-         */
-        if (circuitoActual < circuits.size()) {
-            Circuit circuito = circuits.get(circuitoActual);
-
-            // Crear un label para mostrar el GIF
-            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/gif.gif");
-            JLabel loadingLabel = new JLabel(loadingIcon);
-            loadingLabel.setBounds(resultadosTextArea.getBounds()); // Usar las mismas dimensiones que resultadosTextArea
-            loadingLabel.setOpaque(true); // Asegurar que el label sea opaco
-            add(loadingLabel, Integer.valueOf(1)); // Agregar el label con un alto índice de Z para que quede al frente
-            // Forzar la actualización de la interfaz de usuario
-            revalidate();
-            repaint();
-
-            // Usar SwingWorker para manejar el retraso y la simulación de la carrera
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-                @Override
-                protected Void doInBackground() throws Exception {
-                    // Simular retraso para mostrar la animación
-                    Thread.sleep(1500); // Puedes ajustar la duración según sea necesario
-
-                    return null;
-                }
-
-                @Override
-                protected void done() {
-                    // Quitar la animación GIF
-                    remove(loadingLabel);
-                    revalidate();
-                    repaint();
-
-                    String nombreCircuito = circuito.getNombre();
-                    String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(circuito));
-
-                    resultadosTextArea.setText(resultadoCircuito);
-                    resultadosTextArea.setCaretPosition(0);
-
-                    // Para que la barra comience desde arriba
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            scrollPane.getViewport().setViewPosition(new Point(0, 0));
-                        }
-                    });
-
-                    circuitoActual++;
-
-                    if (circuitoActual >= circuits.size()) {
-                        siguienteButton.setText("Ver Resultado Final");
-                        siguienteButton.addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                mostrarResultadoFinal();
-                                siguienteButton.setEnabled(false);
-                            }
-                        });
-                    }
-                    guardarResultadosEnArchivo(resultadoCircuito);
-                }
-            };
-
-            // Iniciar el SwingWorker
-            worker.execute();
-        }
     }
 
-    private void mostrarResultadoFinal() {
+    private void mostrarResultadoFinal()
+    {
         siguienteButton.setVisible(false);
         String resultadoFinal = campeonato.simularCameponato();
         resultadosTextArea.setText(resultadoFinal);
@@ -489,48 +425,26 @@ public class F1Gui extends JFrame {
 
     private void reiniciarJuego() {
 
-        /*
         getContentPane().removeAll(); // Elimina todos los componentes de la ventana actual
-        dispose();
+        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
         revalidate(); // Vuelve a pintar la ventana para mostrar los cambios
         repaint();
-        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
+        /*
+        startButton.setVisible(true);
+        selectDriverButton.setVisible(false);
+        createDriverButton.setVisible(false);
+        createCircuitButton.setVisible(false);                  //me vuelve al inicio pero queda el boton Salir
+        iniciarCampeonatoButton.setVisible(false);
+        correrGranPrixButton.setVisible(false);
+        siguienteButton.setVisible(false);
+        resultadosTextArea.setVisible(false);
+        scrollPane.setVisible(false);
+        backgroundLabel.setVisible(true);
+        // Detener la reproducción de música si está en curso
+        if (clip != null) {
+            clip.stop();
+        }
          */
-        circuitoActual = 0;
-        numeroPartida++;
-        selectedDriver = null;
-        campeonato = null;
-
-        getContentPane().removeAll();
-        repaint();
-
-        setTitle("FI GAME");
-        setSize(800, 700);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null);
-        circuits = OpenF1Client.generarListaCircuitos();
-        teams = OpenF1Client.generarGrilla();
-        drivers = OpenF1Client.generarListaPilotos(teams);
-
-        ImageIcon backgroundIcon = new ImageIcon("src/main/java/org/example/imag/f1-24-game.jpg");
-        backgroundLabel = new JLabel(backgroundIcon);
-        backgroundLabel.setSize(800, 600);
-        setContentPane(backgroundLabel);
-
-        //PlayMusic("src/main/java/org/example/music/TEMA OFICIAL FORMULA 1 2018 - By Brian Tyler.wav");
-
-        startButton = new JButton("Iniciar Juego");
-        startButton.setBounds(320, 360, 150, 30);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                iniciarJuego();
-            }
-        });
-        add(startButton);
-
-        setVisible(true);
-
     }
 
     private boolean isDriverNumberUsed(int number) {
