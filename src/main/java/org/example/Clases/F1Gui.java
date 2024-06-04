@@ -426,9 +426,11 @@ public class F1Gui extends JFrame {
     private void reiniciarJuego() {
 
         getContentPane().removeAll(); // Elimina todos los componentes de la ventana actual
-        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
+        dispose();
         revalidate(); // Vuelve a pintar la ventana para mostrar los cambios
         repaint();
+        new F1Gui(); // Crea una nueva instancia de F1Gui, reiniciando así el juego
+
         /*
         startButton.setVisible(true);
         selectDriverButton.setVisible(false);
