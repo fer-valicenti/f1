@@ -1,5 +1,6 @@
 package org.example.Clases;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sound.sampled.*;
@@ -18,7 +20,7 @@ public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
     private JComboBox<Team> teamComboBox;
-    private JButton startButton, restartButton, selectDriverButton, createDriverButton, createCircuitButton, selectChangeDriverButton, selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton, correrGranPrixButton,createDriversButtton,podioButton;
+    private JButton startButton, restartButton, selectDriverButton, createDriverButton, createCircuitButton, selectChangeDriverButton, selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton, correrGranPrixButton, createDriversButtton, podioButton;
     private List<Team> teams;
     private List<Driver> drivers;
     private List<Circuit> circuits;
@@ -98,7 +100,8 @@ public class F1Gui extends JFrame {
         createCircuitButton.setBounds(320, 460, 150, 30);
         createCircuitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {listarCircuitos();
+            public void actionPerformed(ActionEvent e) {
+                listarCircuitos();
             }
         });
         add(createCircuitButton);
@@ -378,23 +381,17 @@ public class F1Gui extends JFrame {
         numeroPartida++;
 
 
-       /* podioButton = new JButton("Ver podio");
+        podioButton = new JButton("Ver podio");
         podioButton.setBounds(320, 500, 150, 30);
         podioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                      List<String> podio=new ArrayList<>();
-                String[] lines = resultadoFinal.split("\n");
-                for (int i = 2; i < lines.length; i++) {
-                    String line = lines[i];
-                    String[] parts = line.split(" . ");
-                    String name = parts[0].substring(parts[0].indexOf("- ") + 2).trim();
-                    podio.add(name);
-                }
-                System.out.println(podio);
+                List<Driver> lista = generarPodio(resultadoFinal);
+                mostrarPodio(lista);
+
             }
         });
-        add(podioButton);*/
+        add(podioButton);
     }
 
     private void listarCircuitos() {
@@ -432,20 +429,36 @@ public class F1Gui extends JFrame {
             if (selectedCircuit != null) {
                 // Simular carrera en el circuito seleccionado
                 List<Circuit> circuito = new ArrayList<>();
-                circuito.add(selectedCircuit);
 
+                circuito.add(selectedCircuit);
                 campeonato = new Campeonato(teams, circuito);
                 String nombreCircuito = selectedCircuit.getNombre();
                 String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(selectedCircuit));
                 mostrarTablaResultado(resultadoCircuito, "Resultado del Gran Prix");
                 guardarPartida(numeroPartida, resultadoCircuito);
                 numeroPartida++;
+                actualizarPodio(resultadoCircuito);
+/*
+                podioButton = new JButton("Ver podio");
+                podioButton.setBounds(320, 500, 150, 30);
+                podioButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        actualizarPodio(resultadoCircuito);
+
+                    }
+                });
+                add(podioButton);
+
+ */
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, selecciona un circuito", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Debes seleccionar un piloto primero", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+
     }
 
     private void mostrarTablaResultado(String resultado, String titulo) {
@@ -693,7 +706,89 @@ public class F1Gui extends JFrame {
         dialog.add(backgroundLabel, BorderLayout.CENTER);
         dialog.setVisible(true);
     }
+
+    public List<Driver> generarPodio(String tabla) {
+
+        List<Driver> topThree = new ArrayList<>();
+        String[] lines = tabla.split("\n");
+        int count = 0;
+
+        for (String line : lines) {
+            if (line.trim().isEmpty() || line.startsWith("Tabla")) {
+                continue;
+            }
+
+            String[] parts = line.split(" - ");
+            if (parts.length > 1) {
+                String driver = parts[0].substring(parts[0].indexOf(".") + 2);
+                for (Team equipo : teams) {
+                    if (driver.equalsIgnoreCase(equipo.getPrimer_piloto().getFull_name())) {
+                        topThree.add(equipo.getPrimer_piloto());
+                    }
+                    if (driver.equalsIgnoreCase(equipo.getSegundo_piloto().getFull_name())) {
+                        topThree.add(equipo.getSegundo_piloto());
+                    }
+                }
+                count++;
+            }
+
+            if (count == 3) {
+                break;
+            }
+        }
+
+        return topThree;
+    }
+
+    public void mostrarPodio(List<Driver> drivers) {
+
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Podio");
+        dialog.setSize(626, 626);
+        dialog.setLayout(new BorderLayout());
+
+        JLabel backgroundLabel = new JLabel(new ImageIcon("src/main/java/org/example/imag/ganador-deportes-vacio-podio-iluminado-reflectores-escenario-vacio-reflector-iluminado-podio-ganador-pedestal_53562-5276.jpg"));
+        backgroundLabel.setLayout(null); // No layout manager for absolute positioning
+
+        // Create a panel for the podium
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
+
+        // Add the background label to the layered pane
+        backgroundLabel.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
+        layeredPane.add(backgroundLabel, Integer.valueOf(0));
+
+        // Add drivers' headshots to the layered pane
+        int[][] positions = {
+                {260, 210}, // Coordenadas para el primer piloto
+                {130, 280}, // Coordenadas para el segundo piloto (ajustado 20 px hacia arriba)
+                {380, 250}  // Coordenadas para el tercer piloto (ajustado 20 px hacia arriba)
+        };
+
+        for (int i = 0; i < drivers.size(); i++) {
+            Driver piloto = drivers.get(i);
+            ImageIcon headshotIcon = new ImageIcon(piloto.getHeadshot_url());
+            JLabel headshotLabel = new JLabel(headshotIcon);
+
+            headshotLabel.setBounds(positions[i][0], positions[i][1], headshotIcon.getIconWidth(), headshotIcon.getIconHeight());
+            layeredPane.add(headshotLabel, Integer.valueOf(1));
+        }
+
+        // Add the layered pane to the dialog
+        dialog.add(layeredPane);
+
+        // Set dialog properties
+        dialog.setLocationRelativeTo(null); // Center the dialog on the screen
+        dialog.setVisible(true);
 }
+    private void actualizarPodio(String resultadoCircuito) {
+        List<Driver> listaPodio = generarPodio(resultadoCircuito);
+        mostrarPodio(listaPodio);
+    }
+}
+
+
+
 
 
 

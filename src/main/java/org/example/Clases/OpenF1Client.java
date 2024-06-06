@@ -18,11 +18,11 @@ public class OpenF1Client {
        // List<Driver> drivers = fetchDriversFromAPI();
        // createDriver(drivers);
        // System.out.println(drivers.toString());
-        List<Team> teams=generarGrilla();
+        //List<Team> teams=generarGrilla();
         //System.out.println(teams);
-        List<Driver> drivers=generarListaPilotos(teams);
-        List<Circuit> circuits=generarListaCircuitos();
-        Campeonato campeonato = new Campeonato(teams, circuits);
+        //List<Driver> drivers=generarListaPilotos(teams);
+        //List<Circuit> circuits=generarListaCircuitos();
+        //Campeonato campeonato = new Campeonato(teams, circuits);
         //String resultados = campeonato.simularCameponato();
        //System.out.println(resultados);
         //SwingUtilities.invokeLater(OpenF1GUI::new);
