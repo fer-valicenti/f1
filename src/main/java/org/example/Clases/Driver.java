@@ -3,6 +3,7 @@ package org.example.Clases;
 import org.json.JSONObject;
 
 
+import javax.swing.*;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +17,7 @@ public class Driver {
     private URL headshot_url;
     private String last_name;
     private String name_acronym;
+    private ImageIcon numberImage;
 
     public Driver(){
         country_code="0";
@@ -26,7 +28,7 @@ public class Driver {
         name_acronym="";
     }
 
-    public Driver(String country_code, int driver_number, String first_name,String headshot_url, String last_name, String name_acronym) {
+    public Driver(String country_code, int driver_number, String first_name,String headshot_url, String last_name, String name_acronym, ImageIcon fotoNumero) {
         this.country_code = country_code;
         this.driver_number = driver_number;
         this.first_name = first_name;
@@ -37,6 +39,7 @@ public class Driver {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        this.numberImage=fotoNumero;
         this.headshot_url = url;
         this.last_name = last_name;
         this.name_acronym = name_acronym;
@@ -114,8 +117,16 @@ public class Driver {
         this.last_name = last_name;
     }
 
+    public void setNumberImage(ImageIcon numberImage) {
+        this.numberImage = numberImage;
+    }
+
     public String getName_acronym() {
         return name_acronym;
+    }
+
+    public ImageIcon getNumberImage() {
+        return numberImage;
     }
 
     public void setName_acronym(String name_acronym) {

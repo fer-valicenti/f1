@@ -18,7 +18,7 @@ public class F1Gui extends JFrame {
 
     private JComboBox<Driver> driverComboBox;
     private JComboBox<Team> teamComboBox;
-    private JButton startButton,restartButton, selectDriverButton, createDriverButton,createCircuitButton,selectChangeDriverButton,selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton, correrGranPrixButton;
+    private JButton startButton, restartButton, selectDriverButton, createDriverButton, createCircuitButton, selectChangeDriverButton, selectChangeDriverButton2, iniciarCampeonatoButton, siguienteButton, correrGranPrixButton,createDriversButtton,podioButton;
     private List<Team> teams;
     private List<Driver> drivers;
     private List<Circuit> circuits;
@@ -27,21 +27,21 @@ public class F1Gui extends JFrame {
     private Driver selectedDriver;
     private Team selectedTeam;
     private Clip clip;
-    private JTextArea resultadosTextArea,textArea;
+    private JTextArea resultadosTextArea, textArea;
     private JScrollPane scrollPane;
 
     public static int circuitoActual = 0; //Declarar circuitoActual como un campo de clase
 
     public static int numeroPartida = 1;
-    public F1Gui()
-    {
+
+    public F1Gui() {
         setTitle("FI GAME");
         setSize(800, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        circuits=OpenF1Client.generarListaCircuitos();
-        teams=OpenF1Client.generarGrilla();
-        drivers=OpenF1Client.generarListaPilotos(teams);
+        circuits = OpenF1Client.generarListaCircuitos();
+        teams = OpenF1Client.generarGrilla();
+        drivers = OpenF1Client.generarListaPilotos(teams);
 
         //fondo
         ImageIcon backgroundIcon = new ImageIcon("src/main/java/org/example/imag/f1-24-game.jpg");
@@ -66,8 +66,7 @@ public class F1Gui extends JFrame {
 
     }
 
-    public void iniciarJuego()
-    {
+    public void iniciarJuego() {
         //ocultamos el boton
         startButton.setVisible(false);
 
@@ -99,14 +98,24 @@ public class F1Gui extends JFrame {
         createCircuitButton.setBounds(320, 460, 150, 30);
         createCircuitButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                listarCircuitos();
+            public void actionPerformed(ActionEvent e) {listarCircuitos();
             }
         });
         add(createCircuitButton);
 
+        // Boton lista de pilotos
+        createDriversButtton = new JButton("Lista de Pilotos");
+        createDriversButtton.setBounds(320, 500, 150, 30);
+        createDriversButtton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showTeamsDialog(teams);
+            }
+        });
+        add(createDriversButtton);
+
         restartButton = new JButton("Salir");
-        restartButton.setBounds(320, 500, 150, 30);
+        restartButton.setBounds(320, 540, 150, 30);
         restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,8 +127,7 @@ public class F1Gui extends JFrame {
         setVisible(true);
     }
 
-    private void seleccionarPiloto()
-    {
+    private void seleccionarPiloto() {
         //Ventana para seleccionar piloto
         JDialog selectDriverDialog = new JDialog(this, "Seleccionar piloto", true);
         selectDriverDialog.setSize(400, 300);
@@ -145,17 +153,16 @@ public class F1Gui extends JFrame {
                 selectDriverButton.setVisible(false);
                 createDriverButton.setVisible(false);
                 createCircuitButton.setVisible(false);
-             }
+                createDriversButtton.setVisible(false);
+            }
         });
         selectDriverDialog.add(selectButton);
 
         selectDriverDialog.setVisible(true);
     }
 
-    private void mostrarBotonIniciarCampeonato()
-    {
-        if(selectedDriver != null)
-        {
+    private void mostrarBotonIniciarCampeonato() {
+        if (selectedDriver != null) {
             iniciarCampeonatoButton = new JButton("¡Iniciar Campeonato!");
             iniciarCampeonatoButton.setBounds(320, 400, 150, 30);
             iniciarCampeonatoButton.addActionListener(new ActionListener() {
@@ -254,7 +261,7 @@ public class F1Gui extends JFrame {
 
                 createDriverDialog.dispose();
                 seleccionarEquipo(newDriver);
-                drivers=OpenF1Client.generarListaPilotos(teams);
+                drivers = OpenF1Client.generarListaPilotos(teams);
                 // selectCircuitButton.setEnabled(true); // Habilitar selección de circuito después de crear un piloto
             }
             //seleccionar equipo
@@ -265,38 +272,37 @@ public class F1Gui extends JFrame {
     }
 
     private void iniciarCampeonato() {
-       iniciarCampeonatoButton.setVisible(false);
-       campeonato = new Campeonato(teams, circuits);
+        iniciarCampeonatoButton.setVisible(false);
+        campeonato = new Campeonato(teams, circuits);
 
-       resultadosTextArea = new JTextArea();
+        resultadosTextArea = new JTextArea();
         resultadosTextArea.setEditable(false);
 
         scrollPane = new JScrollPane(resultadosTextArea);
-       scrollPane.setBounds(20, 20, 760, 300);
-       add(scrollPane);
+        scrollPane.setBounds(20, 20, 760, 300);
+        add(scrollPane);
 
 
-       siguienteButton = new JButton("Siguiente Carrera");
-       siguienteButton.setBounds(320, 400, 150, 30);
-       siguienteButton.addActionListener(new ActionListener() {
-           @Override
-           public void actionPerformed(ActionEvent e) {
-               mostrarResultadoCircuitoActual();
-           }
-       });
-       add(siguienteButton);
+        siguienteButton = new JButton("Siguiente Carrera");
+        siguienteButton.setBounds(320, 400, 150, 30);
+        siguienteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarResultadoCircuitoActual();
+            }
+        });
+        add(siguienteButton);
 
         // Ocultar el botón de correr Grand Prix
-        if(correrGranPrixButton != null)
-       {
-           correrGranPrixButton.setVisible(false);
-       }
+        if (correrGranPrixButton != null) {
+            correrGranPrixButton.setVisible(false);
+        }
 
-       mostrarResultadoCircuitoActual();
+        mostrarResultadoCircuitoActual();
 
     }
-    private void mostrarResultadoCircuitoActual()
-    {
+
+    private void mostrarResultadoCircuitoActual() {
         if (circuitoActual < circuits.size()) {
             Circuit circuito = circuits.get(circuitoActual);
 
@@ -351,6 +357,7 @@ public class F1Gui extends JFrame {
                                 siguienteButton.setEnabled(false);
                             }
                         });
+
                     }
                     guardarResultadosEnArchivo(resultadoCircuito);
                 }
@@ -361,14 +368,33 @@ public class F1Gui extends JFrame {
         }
     }
 
-    private void mostrarResultadoFinal()
-    {
+    private void mostrarResultadoFinal() {
+
         siguienteButton.setVisible(false);
         String resultadoFinal = campeonato.simularCameponato();
         resultadosTextArea.setText(resultadoFinal);
         resultadosTextArea.setCaretPosition(0);
         guardarPartida(numeroPartida, resultadoFinal);
         numeroPartida++;
+
+
+       /* podioButton = new JButton("Ver podio");
+        podioButton.setBounds(320, 500, 150, 30);
+        podioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                      List<String> podio=new ArrayList<>();
+                String[] lines = resultadoFinal.split("\n");
+                for (int i = 2; i < lines.length; i++) {
+                    String line = lines[i];
+                    String[] parts = line.split(" . ");
+                    String name = parts[0].substring(parts[0].indexOf("- ") + 2).trim();
+                    podio.add(name);
+                }
+                System.out.println(podio);
+            }
+        });
+        add(podioButton);*/
     }
 
     private void listarCircuitos() {
@@ -405,10 +431,10 @@ public class F1Gui extends JFrame {
 
             if (selectedCircuit != null) {
                 // Simular carrera en el circuito seleccionado
-                List<Circuit> circuito= new ArrayList<>();
+                List<Circuit> circuito = new ArrayList<>();
                 circuito.add(selectedCircuit);
 
-                campeonato = new Campeonato(teams,circuito);
+                campeonato = new Campeonato(teams, circuito);
                 String nombreCircuito = selectedCircuit.getNombre();
                 String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(selectedCircuit));
                 mostrarTablaResultado(resultadoCircuito, "Resultado del Gran Prix");
@@ -483,7 +509,7 @@ public class F1Gui extends JFrame {
         return false; // El número de auto no está en uso
     }
 
-    private void PlayMusic(String filePath){
+    private void PlayMusic(String filePath) {
 
         try {
             File audioFile = new File(filePath);
@@ -492,12 +518,12 @@ public class F1Gui extends JFrame {
             clip.open(audioInputStream);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
             clip.start();
-        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e)
-        {
+        } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }
-    private void seleccionarEquipo(Driver nuevoPiloto){
+
+    private void seleccionarEquipo(Driver nuevoPiloto) {
         JDialog selectTeamDialog = new JDialog(this, "Seleccionar Escuderia", true);
         selectTeamDialog.setSize(400, 300);
         selectTeamDialog.setLayout(null);
@@ -516,7 +542,7 @@ public class F1Gui extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 selectedTeam = (Team) teamComboBox.getSelectedItem();
                 selectTeamDialog.dispose();
-                reemplazarPiloto(selectedTeam,nuevoPiloto);
+                reemplazarPiloto(selectedTeam, nuevoPiloto);
 
             }
         });
@@ -525,7 +551,7 @@ public class F1Gui extends JFrame {
         selectTeamDialog.setVisible(true);
     }
 
-    private void reemplazarPiloto(Team equipo,Driver nuevoPiloto){
+    private void reemplazarPiloto(Team equipo, Driver nuevoPiloto) {
         JDialog selectTeamDialog = new JDialog(this, "Seleccionar Piloto a reemplazar", true);
         selectTeamDialog.setSize(400, 300);
         selectTeamDialog.setLayout(null);
@@ -539,6 +565,8 @@ public class F1Gui extends JFrame {
         selectChangeDriverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                nuevoPiloto.setNumberImage(equipo.getPrimer_piloto().getNumberImage());
+                nuevoPiloto.setHeadshot_url(equipo.getPrimer_piloto().getHeadshot_url());
                 equipo.setPrimer_piloto(nuevoPiloto);
                 selectTeamDialog.dispose();
             }
@@ -549,6 +577,8 @@ public class F1Gui extends JFrame {
         selectChangeDriverButton2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                nuevoPiloto.setNumberImage(equipo.getSegundo_piloto().getNumberImage());
+                nuevoPiloto.setHeadshot_url(equipo.getSegundo_piloto().getHeadshot_url());
                 equipo.setSegundo_piloto(nuevoPiloto);
                 selectTeamDialog.dispose();
             }
@@ -582,6 +612,90 @@ public class F1Gui extends JFrame {
             e.printStackTrace();
         }
     }
+
+    private void showTeamsDialog(List<Team> teams) {
+
+
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Fórmula 1 Teams");
+        dialog.setSize(1280, 720);
+        dialog.setLayout(new BorderLayout());
+
+        // Crear un JLabel para la imagen de fondo
+        JLabel backgroundLabel = new JLabel(new ImageIcon("src/main/java/org/example/imag/BR2HTOLUJBBODM55RWTRNX5JSQ.jpg"));
+        backgroundLabel.setLayout(new GridLayout(1, 2));
+
+        JPanel leftPanel = new JPanel(new GridLayout(5, 1));
+        leftPanel.setOpaque(false); // Hacer el panel transparente
+        JPanel rightPanel = new JPanel(new GridLayout(5, 1));
+        rightPanel.setOpaque(false); // Hacer el panel transparente
+
+        for (int i = 0; i < teams.size(); i++) {
+            Team team = teams.get(i);
+            JPanel teamPanel = new JPanel(new BorderLayout());
+            teamPanel.setOpaque(false); // Hacer el panel transparente
+
+            // Crear la barra de color del equipo
+            JPanel colorBar = new JPanel();
+            colorBar.setBackground(team.getTeam_color());
+            colorBar.setPreferredSize(new Dimension(25, 50));
+
+            // Crear un panel para los pilotos
+            JPanel driversPanel = new JPanel(new GridLayout(2, 1));
+            driversPanel.setOpaque(false); // Hacer el panel transparente
+
+            // Añadir el primer piloto
+            JPanel driver1Panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            driver1Panel.setOpaque(false);
+
+            JLabel driver1Label = new JLabel(team.getPrimer_piloto().getName_acronym());
+            driver1Label.setIcon(new ImageIcon(team.getPrimer_piloto().getHeadshot_url()));
+            driver1Panel.add(driver1Label);
+
+            // Redimensionar la imagen del número
+            ImageIcon number1Icon = new ImageIcon(String.valueOf(team.getPrimer_piloto().getNumberImage()));
+            Image number1Image = number1Icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+            JLabel number1Label = new JLabel(new ImageIcon(number1Image));
+            driver1Panel.add(number1Label);
+
+            driversPanel.add(driver1Panel);
+
+            // Añadir el segundo piloto
+            JPanel driver2Panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            driver2Panel.setOpaque(false);
+
+            JLabel driver2Label = new JLabel(team.getSegundo_piloto().getName_acronym());
+            driver2Label.setIcon(new ImageIcon(team.getSegundo_piloto().getHeadshot_url()));
+            driver2Panel.add(driver2Label);
+
+            // Redimensionar la imagen del número
+            ImageIcon number2Icon = new ImageIcon(String.valueOf(team.getSegundo_piloto().getNumberImage()));
+            Image number2Image = number2Icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+            JLabel number2Label = new JLabel(new ImageIcon(number2Image));
+            driver2Panel.add(number2Label);
+
+            driversPanel.add(driver2Panel);
+
+            // Añadir los componentes al panel del equipo
+            teamPanel.add(colorBar, BorderLayout.WEST);
+            teamPanel.add(driversPanel, BorderLayout.CENTER);
+
+            if (i < 5) {
+                leftPanel.add(teamPanel);
+            } else {
+                rightPanel.add(teamPanel);
+            }
+        }
+
+        backgroundLabel.add(leftPanel);
+        backgroundLabel.add(rightPanel);
+
+        dialog.add(backgroundLabel, BorderLayout.CENTER);
+        dialog.setVisible(true);
+    }
 }
+
+
+
 
 
