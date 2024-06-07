@@ -356,7 +356,7 @@ public class F1Gui extends JFrame {
             Circuit circuito = circuits.get(circuitoActual);
 
             // Crear un label para mostrar el GIF
-            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/gif.gif");
+            ImageIcon loadingIcon = new ImageIcon("src/main/java/org/example/imag/giffffff.gif");
             JLabel loadingLabel = new JLabel(loadingIcon);
             loadingLabel.setBounds(resultadosTextArea.getBounds()); // Usar las mismas dimensiones que resultadosTextArea
             loadingLabel.setOpaque(true); // Asegurar que el label sea opaco
@@ -405,7 +405,6 @@ public class F1Gui extends JFrame {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 String tabla=campeonato.generarTablaFinal(mapa);
-                                System.out.println(tabla);
                                 mostrarResultadoFinal(tabla);
                                 siguienteButton.setEnabled(false);
                             }
