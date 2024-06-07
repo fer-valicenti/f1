@@ -65,7 +65,16 @@ public class Campeonato implements IManejoDeCampeonatos {
         return campeonatoResultado.toString();
 
     }
+    public String generarTablaFinal(Map<Driver, Integer> puntosTotales)
+    {
+        Map<Team, Integer> puntosTotalesEquiposFinal = new HashMap<>();
+        String tablaPilotos = generarTablaPosiciones(puntosTotales);
+        actualizarPuntosPorEquipo(puntosTotalesEquiposFinal, puntosTotales);
+        String tablaEquipos = generarTablaPosicionesEquipos(puntosTotalesEquiposFinal);
+        String tablaFinal = "\nTabla de posiciones Final del Campeonato: \n\n" +tablaPilotos+ "\nTabla de posiciones Final del Campeonato de Constructores: \n\n" + tablaEquipos;
 
+        return tablaFinal;
+    }
 
     /**
      * Simula una carrera para un circuito dado generando tiempos de vuelta,

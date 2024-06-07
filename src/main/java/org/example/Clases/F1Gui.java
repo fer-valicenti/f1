@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.sound.sampled.*;
 
 
@@ -382,7 +383,8 @@ public class F1Gui extends JFrame {
                     repaint();
 
                     String nombreCircuito = circuito.getNombre();
-                    String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(campeonato.simularCarrera(circuito));
+                    Map<Driver,Integer> mapa = campeonato.simularCarrera(circuito);
+                    String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(mapa);
 
                     resultadosTextArea.setText(resultadoCircuito);
                     resultadosTextArea.setCaretPosition(0);
@@ -401,7 +403,9 @@ public class F1Gui extends JFrame {
                         siguienteButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                mostrarResultadoFinal();
+                                String tabla=campeonato.generarTablaFinal(mapa);
+                                System.out.println(tabla);
+                                mostrarResultadoFinal(tabla);
                                 siguienteButton.setEnabled(false);
                             }
                         });
@@ -424,8 +428,8 @@ public class F1Gui extends JFrame {
      Muestra un botón para ver el podio.
      */
 
-    private void mostrarResultadoFinal() {
-
+    private void mostrarResultadoFinal(String resultadoFinal) {
+/*
         siguienteButton.setVisible(false);
         String resultadoFinal = campeonato.simularCameponato();
         resultadosTextArea.setText(resultadoFinal);
@@ -446,6 +450,28 @@ public class F1Gui extends JFrame {
         });
         add(podioButton);
 
+
+
+ */
+
+        siguienteButton.setVisible(false);
+        resultadosTextArea.setText(resultadoFinal);
+        resultadosTextArea.setCaretPosition(0);
+        guardarPartida(numeroPartida, resultadoFinal);
+        numeroPartida++;
+
+
+        podioButton = new JButton("Ver podio");
+        podioButton.setBounds(320, 500, 150, 30);
+        podioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Driver> lista = generarPodio(resultadoFinal);
+                mostrarPodio(lista);
+
+            }
+        });
+        add(podioButton);
 
     }
 
