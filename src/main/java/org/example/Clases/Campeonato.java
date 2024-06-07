@@ -103,6 +103,8 @@ public class Campeonato implements IManejoDeCampeonatos {
         return puntos;
     }
 
+
+
     /**
      * Genera una tabla formateada de posiciones para una sola carrera
      * basada en los puntos obtenidos por los pilotos en la carrera.

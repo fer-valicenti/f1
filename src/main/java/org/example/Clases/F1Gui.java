@@ -68,6 +68,13 @@ public class F1Gui extends JFrame {
 
     }
 
+    /**
+     *
+     *Este método se llama cuando se hace clic en el botón "Iniciar Juego". Realiza las siguientes acciones:
+     * Oculta el botón de "Iniciar Juego".
+     * Muestra botones para seleccionar un piloto, crear un piloto, ver la lista de circuitos, ver la lista de pilotos y salir del juego.
+     */
+
     public void iniciarJuego() {
         //ocultamos el boton
         startButton.setVisible(false);
@@ -130,6 +137,14 @@ public class F1Gui extends JFrame {
         setVisible(true);
     }
 
+    /**
+     *
+     *Este método se llama cuando se hace clic en el botón "Seleccionar Piloto". Realiza las siguientes acciones:
+     * Muestra un diálogo para seleccionar un piloto de una lista desplegable de pilotos disponibles.
+     * Cuando se selecciona un piloto, se oculta el diálogo y se muestra el botón "Iniciar Campeonato" y el botón "Correr Grand Prix".
+     * También se ocultan otros botones relacionados con la selección de pilotos.
+     */
+
     private void seleccionarPiloto() {
         //Ventana para seleccionar piloto
         JDialog selectDriverDialog = new JDialog(this, "Seleccionar piloto", true);
@@ -164,6 +179,9 @@ public class F1Gui extends JFrame {
         selectDriverDialog.setVisible(true);
     }
 
+    /**
+     *Este método muestra el botón "Iniciar Campeonato" y el botón "Correr Grand Prix" después de seleccionar un piloto.
+     */
     private void mostrarBotonIniciarCampeonato() {
         if (selectedDriver != null) {
             iniciarCampeonatoButton = new JButton("¡Iniciar Campeonato!");
@@ -190,6 +208,16 @@ public class F1Gui extends JFrame {
             repaint();
         }
     }
+
+    /**
+     *
+     Este método se llama cuando se hace clic en el botón "Crear Piloto". Realiza las siguientes acciones:
+     Muestra un diálogo para que el usuario ingrese los detalles de un nuevo piloto, como nombre, apellido, país y número de auto.
+     Una vez que se ingresan los detalles y se hace clic en "Crear", se crea un nuevo objeto Driver con los detalles proporcionados.
+     Se muestra un mensaje de confirmación con los detalles del nuevo piloto creado.
+     Luego se abre un diálogo para seleccionar el equipo al que se desea asignar el nuevo piloto.
+     *
+     */
 
     private void crearPiloto() {
         // Ventana para crear piloto
@@ -274,6 +302,15 @@ public class F1Gui extends JFrame {
         createDriverDialog.setVisible(true);
     }
 
+    /**
+     *
+     *Este método se llama cuando se hace clic en el botón "¡Iniciar Campeonato!". Realiza las siguientes acciones:
+     * Oculta el botón "¡Iniciar Campeonato!".
+     * Crea un nuevo objeto Campeonato con la lista de equipos y circuitos generados anteriormente.
+     * Muestra un área de texto para mostrar los resultados de las carreras.
+     * Muestra el botón "Siguiente Carrera" para simular la primera carrera.
+     */
+
     private void iniciarCampeonato() {
         iniciarCampeonatoButton.setVisible(false);
         campeonato = new Campeonato(teams, circuits);
@@ -304,6 +341,14 @@ public class F1Gui extends JFrame {
         mostrarResultadoCircuitoActual();
 
     }
+
+    /**
+     *
+     *Este método simula una carrera en el circuito actual y muestra los resultados en el área de texto. Realiza las siguientes acciones:
+     * Si aún quedan circuitos por correr, muestra una animación de carga y simula la carrera.
+     * Una vez completada la simulación, muestra los resultados de la carrera en el área de texto.
+     * Avanza al siguiente circuito si aún quedan más por correr.
+     */
 
     private void mostrarResultadoCircuitoActual() {
         if (circuitoActual < circuits.size()) {
@@ -371,6 +416,14 @@ public class F1Gui extends JFrame {
         }
     }
 
+    /**
+     *
+     Este método muestra los resultados finales del campeonato y ofrece la opción de ver el podio. Realiza las siguientes acciones:
+     Muestra los resultados finales del campeonato en el área de texto.
+     Guarda los resultados en un archivo.
+     Muestra un botón para ver el podio.
+     */
+
     private void mostrarResultadoFinal() {
 
         siguienteButton.setVisible(false);
@@ -392,7 +445,14 @@ public class F1Gui extends JFrame {
             }
         });
         add(podioButton);
+
+
     }
+
+    /**
+     *
+     Este método muestra una lista de nombres de circuitos en un cuadro de diálogo
+     */
 
     private void listarCircuitos() {
         StringBuilder circuitosText = new StringBuilder();
@@ -401,6 +461,15 @@ public class F1Gui extends JFrame {
         }
         JOptionPane.showMessageDialog(this, circuitosText.toString(), "Lista de Circuitos", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    /**
+     *Este método simula un Gran Prix en un circuito seleccionado. Realiza las siguientes acciones:
+     * Muestra un cuadro de diálogo para seleccionar el circuito en el que se desea correr.
+     * Simula la carrera en el circuito seleccionado.
+     * Muestra los resultados en un cuadro de diálogo.
+     * Guarda los resultados en un archivo.
+     * Actualiza el podio según los resultados de la carrera.
+     */
 
     private void correrGrandPrix() {
 
@@ -475,6 +544,11 @@ public class F1Gui extends JFrame {
         dialog.setVisible(true);
     }
 
+    /**
+     *
+     *Este método reinicia el juego, restableciendo las variables y configuraciones a su estado inicial.
+     */
+
     private void reiniciarJuego() {
         circuitoActual = 0;
         numeroPartida++;
@@ -512,7 +586,6 @@ public class F1Gui extends JFrame {
     }
 
     private boolean isDriverNumberUsed(int number) {
-        // Debes implementar la lógica para verificar si el número de auto está en uso
         // Devuelve true si el número de auto ya está asignado a otro piloto, de lo contrario, devuelve false
         for (Driver driver : drivers) { // Suponiendo que drivers es la lista de todos los pilotos
             if (driver.getDriver_number() == number) {
@@ -535,6 +608,14 @@ public class F1Gui extends JFrame {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     *Este método se llama cuando se crea un nuevo piloto y se debe seleccionar el equipo al que pertenecerá. Realiza las siguientes acciones:
+     * Muestra un cuadro de diálogo con una lista desplegable de equipos disponibles.
+     * Cuando se selecciona un equipo y se confirma, el piloto recién creado se asigna a ese equipo.
+     * Si todos los equipos están llenos, se muestra un mensaje de error y se solicita al usuario que seleccione otro equipo o cancele la operació
+     */
 
     private void seleccionarEquipo(Driver nuevoPiloto) {
         JDialog selectTeamDialog = new JDialog(this, "Seleccionar Escuderia", true);
@@ -564,6 +645,12 @@ public class F1Gui extends JFrame {
         selectTeamDialog.setVisible(true);
     }
 
+    /**
+     *
+     *Este método se llama cuando se selecciona un piloto existente y se desea cambiar el equipo al que pertenece. Realiza las siguientes acciones:
+     * Muestra un cuadro de diálogo para seleccionar el nuevo equipo para el piloto.
+     * Cuando se selecciona un nuevo equipo y se confirma, el piloto se reemplaza en su equipo actual por otro piloto y se asigna al nuevo equipo
+     */
     private void reemplazarPiloto(Team equipo, Driver nuevoPiloto) {
         JDialog selectTeamDialog = new JDialog(this, "Seleccionar Piloto a reemplazar", true);
         selectTeamDialog.setSize(400, 300);
@@ -625,6 +712,13 @@ public class F1Gui extends JFrame {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     *Este método muestra una ventana emergente que presenta información sobre los equipos de Fórmula 1,
+     *  incluyendo los nombres de los pilotos de cada equipo y la paleta de colores del equipo.
+
+     */
 
     private void showTeamsDialog(List<Team> teams) {
 
@@ -707,6 +801,14 @@ public class F1Gui extends JFrame {
         dialog.setVisible(true);
     }
 
+    /**
+     *
+     * Este método genera y muestra el podio basado en los resultados finales del campeonato. Realiza las siguientes acciones:
+     * Obtiene los resultados finales del campeonato.
+     * Calcula los tres primeros pilotos basándose en los puntos acumulados.
+     * Muestra una ventana emergente con los nombres y las posiciones de los tres primeros pilotos en el podio.
+     *
+     */
     public List<Driver> generarPodio(String tabla) {
 
         List<Driver> topThree = new ArrayList<>();
