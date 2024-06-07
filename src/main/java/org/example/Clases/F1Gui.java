@@ -384,7 +384,8 @@ public class F1Gui extends JFrame {
 
                     String nombreCircuito = circuito.getNombre();
                     Map<Driver,Integer> mapa = campeonato.simularCarrera(circuito);
-                    String resultadoCircuito = nombreCircuito + "\n\n" + campeonato.generarTablaPosicionesCarrera(mapa);
+                    String tablaCarrera = campeonato.getTablaCarrera();
+                    String resultadoCircuito = nombreCircuito + "\n\n"+ "Resultado de la Carrera"+"\n\n"+ tablaCarrera +"\n\n"+"Campeonato de Pilotos"+"\n\n" + campeonato.generarTablaPosicionesCarrera(mapa);
 
                     resultadosTextArea.setText(resultadoCircuito);
                     resultadosTextArea.setCaretPosition(0);
@@ -889,8 +890,9 @@ public class F1Gui extends JFrame {
         // Add drivers' headshots to the layered pane
         int[][] positions = {
                 {260, 210}, // Coordenadas para el primer piloto
+                 {380, 250},  // Coordenadas para el tercer piloto (ajustado 20 px hacia arriba)
                 {130, 280}, // Coordenadas para el segundo piloto (ajustado 20 px hacia arriba)
-                {380, 250}  // Coordenadas para el tercer piloto (ajustado 20 px hacia arriba)
+
         };
 
         for (int i = 0; i < drivers.size(); i++) {

@@ -9,6 +9,7 @@ public class Campeonato implements IManejoDeCampeonatos {
     private List<Circuit> circuitos;
     private Map<Driver, Integer> puntos;
     private Map<Driver, Double> mejoresTiempos;
+    private String tablaCarrera;
     private int totalCarreras;
 
     private static final double AJUSTE = 0.8; //ajuste para dar mas posibilidades d ganar a un piloto q ya haya ganado
@@ -17,6 +18,7 @@ public class Campeonato implements IManejoDeCampeonatos {
         this.equipos = equipos;
         this.circuitos = circuitos;
         this.puntos = new HashMap<>();
+        tablaCarrera="";
         this.mejoresTiempos = new HashMap<>();
         for (Team equipo : equipos) {
             puntos.put(equipo.getPrimer_piloto(), 0);
@@ -107,12 +109,14 @@ public class Campeonato implements IManejoDeCampeonatos {
 
         List<Driver> pilotosEnCarrera = new ArrayList<>(tiemposDeVuelta.keySet());
         pilotosEnCarrera.sort(Comparator.comparingDouble(tiemposDeVuelta::get));
-
+        tablaCarrera=generarTablaPosicionesdeCarrera(pilotosEnCarrera);
         asignarPuntos(pilotosEnCarrera);
         return puntos;
     }
 
-
+    public String getTablaCarrera() {
+        return tablaCarrera;
+    }
 
     /**
      * Genera una tabla formateada de posiciones para una sola carrera
@@ -125,7 +129,16 @@ public class Campeonato implements IManejoDeCampeonatos {
         pilotosOrdenadosPorPuntos.sort(Comparator.comparingInt(puntosCarrera::get).reversed());
         for (int i = 0; i < pilotosOrdenadosPorPuntos.size(); i++) {
             Driver piloto = pilotosOrdenadosPorPuntos.get(i);
-            tabla.append(String.format("%d. %s - Mejor Tiempo de Vuelta: %.2f - Puntos: %d\n", i + 1, piloto.getFull_name(), mejoresTiempos.get(piloto), puntosCarrera.get(piloto)));
+            tabla.append(String.format("%d. %s - Puntos: %d\n", i + 1, piloto.getFull_name(), puntosCarrera.get(piloto)));
+        }
+        return tabla.toString();
+    }
+    public String generarTablaPosicionesdeCarrera(List<Driver> puntosCarrera) {
+        StringBuilder tabla = new StringBuilder();
+
+        for (int i = 0; i < puntosCarrera.size(); i++) {
+            Driver piloto = puntosCarrera.get(i);
+            tabla.append(String.format("%d. %s - Mejor Tiempo de Vuelta: %.2f  \n", i + 1, piloto.getFull_name(), mejoresTiempos.get(piloto)));
         }
         return tabla.toString();
     }
