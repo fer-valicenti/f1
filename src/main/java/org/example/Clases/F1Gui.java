@@ -429,31 +429,6 @@ public class F1Gui extends JFrame {
      */
 
     private void mostrarResultadoFinal(String resultadoFinal) {
-/*
-        siguienteButton.setVisible(false);
-        String resultadoFinal = campeonato.simularCameponato();
-        resultadosTextArea.setText(resultadoFinal);
-        resultadosTextArea.setCaretPosition(0);
-        guardarPartida(numeroPartida, resultadoFinal);
-        numeroPartida++;
-
-
-        podioButton = new JButton("Ver podio");
-        podioButton.setBounds(320, 500, 150, 30);
-        podioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                List<Driver> lista = generarPodio(resultadoFinal);
-                mostrarPodio(lista);
-
-            }
-        });
-        add(podioButton);
-
-
-
- */
-
         siguienteButton.setVisible(false);
         resultadosTextArea.setText(resultadoFinal);
         resultadosTextArea.setCaretPosition(0);
@@ -533,19 +508,7 @@ public class F1Gui extends JFrame {
                 guardarPartida(numeroPartida, resultadoCircuito);
                 numeroPartida++;
                 actualizarPodio(resultadoCircuito);
-/*
-                podioButton = new JButton("Ver podio");
-                podioButton.setBounds(320, 500, 150, 30);
-                podioButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        actualizarPodio(resultadoCircuito);
 
-                    }
-                });
-                add(podioButton);
-
- */
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, selecciona un circuito", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -878,15 +841,14 @@ public class F1Gui extends JFrame {
         JLabel backgroundLabel = new JLabel(new ImageIcon("src/main/java/org/example/imag/ganador-deportes-vacio-podio-iluminado-reflectores-escenario-vacio-reflector-iluminado-podio-ganador-pedestal_53562-5276.jpg"));
         backgroundLabel.setLayout(null); // No layout manager for absolute positioning
 
-        // Create a panel for the podium
+        // Crea el panel
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
 
-        // Add the background label to the layered pane
         backgroundLabel.setBounds(0, 0, dialog.getWidth(), dialog.getHeight());
         layeredPane.add(backgroundLabel, Integer.valueOf(0));
 
-        // Add drivers' headshots to the layered pane
+        // arreglo de posisiones para la cara de los pilotos
         int[][] positions = {
                 {260, 210}, // Coordenadas para el primer piloto
                  {380, 250},  // Coordenadas para el tercer piloto (ajustado 20 px hacia arriba)
@@ -903,11 +865,9 @@ public class F1Gui extends JFrame {
             layeredPane.add(headshotLabel, Integer.valueOf(1));
         }
 
-        // Add the layered pane to the dialog
-        dialog.add(layeredPane);
 
-        // Set dialog properties
-        dialog.setLocationRelativeTo(null); // Center the dialog on the screen
+        dialog.add(layeredPane);
+        dialog.setLocationRelativeTo(null); // lo centra
         dialog.setVisible(true);
 }
     private void actualizarPodio(String resultadoCircuito) {
